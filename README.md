@@ -16,5 +16,5 @@ This code may not be compatible with 32-bit versions of Office. If you need 32-b
 
 # Future updates
 
-1. Future updates will include simpler and more concise code. As an example, the original code uses conditional compilation in various places to differentiate between the long and longPtr datatypes. However, longPtr transforms to long in 32 bit, and longLong in 64 bit environments. So the conditional compilation between one type to the other is not necessary.
+1. Future updates will include simpler and more concise code. As an example, the original code uses conditional compilation in various places to differentiate between the long and longPtr datatypes. However, [longPtr transforms to long in 32 bit, and longLong in 64 bit environments](https://docs.microsoft.com/en-us/office/vba/language/reference/user-interface-help/longptr-data-type). So the conditional compilation between one type to the other is not necessary.
 2. Future versions will implement and utilize the ISqlite3 interface instead of making direct reference to the cSqlite3 class. Significant work on this update has been completed. However more work needs to be completed.
