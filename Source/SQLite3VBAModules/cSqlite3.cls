@@ -1,94 +1,110 @@
-Attribute VB_Name = "Sqlite3"
+VERSION 1.0 CLASS
+BEGIN
+  MultiUse = -1  'True
+END
+Attribute VB_Name = "cSqlite3"
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = False
+Attribute VB_PredeclaredId = False
+Attribute VB_Exposed = False
 Option Explicit
 
 ' Notes:
 ' Microsoft uses UTF-16, little endian byte order.
 
+Private Const P_MASTER_DATABASE_DIRECTORY As String = ""
+
+Private Const P_MASTER_DIRECTORY_SET As Long = vbObjectError + 513
+
+Private pDatabaseDirectory As String
+
 Private Const JULIANDAY_OFFSET As Double = 2415018.5
 
 ' Returned from SQLite3Initialize
-Public Const SQLITE_INIT_OK     As Long = 0
-Public Const SQLITE_INIT_ERROR  As Long = 1
+Private Const P_SQLITE_INIT_OK     As Long = 0
+Private Const P_SQLITE_INIT_ERROR  As Long = 1
 
 ' SQLite data types
-Public Const SQLITE_INTEGER  As Long = 1
-Public Const SQLITE_FLOAT    As Long = 2
-Public Const SQLITE_TEXT     As Long = 3
-Public Const SQLITE_BLOB     As Long = 4
-Public Const SQLITE_NULL     As Long = 5
+Private Const P_SQLITE_INTEGER  As Long = 1
+Private Const P_SQLITE_FLOAT    As Long = 2
+Private Const P_SQLITE_TEXT     As Long = 3
+Private Const P_SQLITE_BLOB     As Long = 4
+Private Const P_SQLITE_NULL     As Long = 5
 
 ' SQLite atandard return value
-Public Const SQLITE_OK          As Long = 0   ' Successful result
-Public Const SQLITE_ERROR       As Long = 1   ' SQL error or missing database
-Public Const SQLITE_INTERNAL    As Long = 2   ' Internal logic error in SQLite
-Public Const SQLITE_PERM        As Long = 3   ' Access permission denied
-Public Const SQLITE_ABORT       As Long = 4   ' Callback routine requested an abort
-Public Const SQLITE_BUSY        As Long = 5   ' The database file is locked
-Public Const SQLITE_LOCKED      As Long = 6   ' A table in the database is locked
-Public Const SQLITE_NOMEM       As Long = 7   ' A malloc() failed
-Public Const SQLITE_READONLY    As Long = 8   ' Attempt to write a readonly database
-Public Const SQLITE_INTERRUPT   As Long = 9   ' Operation terminated by sqlite3_interrupt()
-Public Const SQLITE_IOERR      As Long = 10   ' Some kind of disk I/O error occurred
-Public Const SQLITE_CORRUPT    As Long = 11   ' The database disk image is malformed
-Public Const SQLITE_NOTFOUND   As Long = 12   ' NOT USED. Table or record not found
-Public Const SQLITE_FULL       As Long = 13   ' Insertion failed because database is full
-Public Const SQLITE_CANTOPEN   As Long = 14   ' Unable to open the database file
-Public Const SQLITE_PROTOCOL   As Long = 15   ' NOT USED. Database lock protocol error
-Public Const SQLITE_EMPTY      As Long = 16   ' Database is empty
-Public Const SQLITE_SCHEMA     As Long = 17   ' The database schema changed
-Public Const SQLITE_TOOBIG     As Long = 18   ' String or BLOB exceeds size limit
-Public Const SQLITE_CONSTRAINT As Long = 19   ' Abort due to constraint violation
-Public Const SQLITE_MISMATCH   As Long = 20   ' Data type mismatch
-Public Const SQLITE_MISUSE     As Long = 21   ' Library used incorrectly
-Public Const SQLITE_NOLFS      As Long = 22   ' Uses OS features not supported on host
-Public Const SQLITE_AUTH       As Long = 23   ' Authorization denied
-Public Const SQLITE_FORMAT     As Long = 24   ' Auxiliary database format error
-Public Const SQLITE_RANGE      As Long = 25   ' 2nd parameter to sqlite3_bind out of range
-Public Const SQLITE_NOTADB     As Long = 26   ' File opened that is not a database file
-Public Const SQLITE_ROW        As Long = 100  ' sqlite3_step() has another row ready
-Public Const SQLITE_DONE       As Long = 101  ' sqlite3_step() has finished executing
+Private Const P_SQLITE_OK          As Long = 0   ' Successful result
+Private Const P_SQLITE_ERROR       As Long = 1   ' SQL error or missing database
+Private Const P_SQLITE_INTERNAL    As Long = 2   ' Internal logic error in SQLite
+Private Const P_SQLITE_PERM        As Long = 3   ' Access permission denied
+Private Const P_SQLITE_ABORT       As Long = 4   ' Callback routine requested an abort
+Private Const P_SQLITE_BUSY        As Long = 5   ' The database file is locked
+Private Const P_SQLITE_LOCKED      As Long = 6   ' A table in the database is locked
+Private Const P_SQLITE_NOMEM       As Long = 7   ' A malloc() failed
+Private Const P_SQLITE_READONLY    As Long = 8   ' Attempt to write a readonly database
+Private Const P_SQLITE_INTERRUPT   As Long = 9   ' Operation terminated by sqlite3_interrupt()
+Private Const P_SQLITE_IOERR      As Long = 10   ' Some kind of disk I/O error occurred
+Private Const P_SQLITE_CORRUPT    As Long = 11   ' The database disk image is malformed
+Private Const P_SQLITE_NOTFOUND   As Long = 12   ' NOT USED. Table or record not found
+Private Const P_SQLITE_FULL       As Long = 13   ' Insertion failed because database is full
+Private Const P_SQLITE_CANTOPEN   As Long = 14   ' Unable to open the database file
+Private Const P_SQLITE_PROTOCOL   As Long = 15   ' NOT USED. Database lock protocol error
+Private Const P_SQLITE_EMPTY      As Long = 16   ' Database is empty
+Private Const P_SQLITE_SCHEMA     As Long = 17   ' The database schema changed
+Private Const P_SQLITE_TOOBIG     As Long = 18   ' String or BLOB exceeds size limit
+Private Const P_SQLITE_CONSTRAINT As Long = 19   ' Abort due to constraint violation
+Private Const P_SQLITE_MISMATCH   As Long = 20   ' Data type mismatch
+Private Const P_SQLITE_MISUSE     As Long = 21   ' Library used incorrectly
+Private Const P_SQLITE_NOLFS      As Long = 22   ' Uses OS features not supported on host
+Private Const P_SQLITE_AUTH       As Long = 23   ' Authorization denied
+Private Const P_SQLITE_FORMAT     As Long = 24   ' Auxiliary database format error
+Private Const P_SQLITE_RANGE      As Long = 25   ' 2nd parameter to sqlite3_bind out of range
+Private Const P_SQLITE_NOTADB     As Long = 26   ' File opened that is not a database file
+Private Const P_SQLITE_ROW        As Long = 100  ' sqlite3_step() has another row ready
+Private Const P_SQLITE_DONE       As Long = 101  ' sqlite3_step() has finished executing
 
 ' Extended error codes
-Public Const SQLITE_IOERR_READ               As Long = 266  '(SQLITE_IOERR | (1<<8))
-Public Const SQLITE_IOERR_SHORT_READ         As Long = 522  '(SQLITE_IOERR | (2<<8))
-Public Const SQLITE_IOERR_WRITE              As Long = 778  '(SQLITE_IOERR | (3<<8))
-Public Const SQLITE_IOERR_FSYNC              As Long = 1034 '(SQLITE_IOERR | (4<<8))
-Public Const SQLITE_IOERR_DIR_FSYNC          As Long = 1290 '(SQLITE_IOERR | (5<<8))
-Public Const SQLITE_IOERR_TRUNCATE           As Long = 1546 '(SQLITE_IOERR | (6<<8))
-Public Const SQLITE_IOERR_FSTAT              As Long = 1802 '(SQLITE_IOERR | (7<<8))
-Public Const SQLITE_IOERR_UNLOCK             As Long = 2058 '(SQLITE_IOERR | (8<<8))
-Public Const SQLITE_IOERR_RDLOCK             As Long = 2314 '(SQLITE_IOERR | (9<<8))
-Public Const SQLITE_IOERR_DELETE             As Long = 2570 '(SQLITE_IOERR | (10<<8))
-Public Const SQLITE_IOERR_BLOCKED            As Long = 2826 '(SQLITE_IOERR | (11<<8))
-Public Const SQLITE_IOERR_NOMEM              As Long = 3082 '(SQLITE_IOERR | (12<<8))
-Public Const SQLITE_IOERR_ACCESS             As Long = 3338 '(SQLITE_IOERR | (13<<8))
-Public Const SQLITE_IOERR_CHECKRESERVEDLOCK  As Long = 3594 '(SQLITE_IOERR | (14<<8))
-Public Const SQLITE_IOERR_LOCK               As Long = 3850 '(SQLITE_IOERR | (15<<8))
-Public Const SQLITE_IOERR_CLOSE              As Long = 4106 '(SQLITE_IOERR | (16<<8))
-Public Const SQLITE_IOERR_DIR_CLOSE          As Long = 4362 '(SQLITE_IOERR | (17<<8))
-Public Const SQLITE_LOCKED_SHAREDCACHE       As Long = 265  '(SQLITE_LOCKED | (1<<8) )
+Private Const P_SQLITE_IOERR_READ               As Long = 266  '(SQLITE_IOERR | (1<<8))
+Private Const P_SQLITE_IOERR_SHORT_READ         As Long = 522  '(SQLITE_IOERR | (2<<8))
+Private Const P_SQLITE_IOERR_WRITE              As Long = 778  '(SQLITE_IOERR | (3<<8))
+Private Const P_SQLITE_IOERR_FSYNC              As Long = 1034 '(SQLITE_IOERR | (4<<8))
+Private Const P_SQLITE_IOERR_DIR_FSYNC          As Long = 1290 '(SQLITE_IOERR | (5<<8))
+Private Const P_SQLITE_IOERR_TRUNCATE           As Long = 1546 '(SQLITE_IOERR | (6<<8))
+Private Const P_SQLITE_IOERR_FSTAT              As Long = 1802 '(SQLITE_IOERR | (7<<8))
+Private Const P_SQLITE_IOERR_UNLOCK             As Long = 2058 '(SQLITE_IOERR | (8<<8))
+Private Const P_SQLITE_IOERR_RDLOCK             As Long = 2314 '(SQLITE_IOERR | (9<<8))
+Private Const P_SQLITE_IOERR_DELETE             As Long = 2570 '(SQLITE_IOERR | (10<<8))
+Private Const P_SQLITE_IOERR_BLOCKED            As Long = 2826 '(SQLITE_IOERR | (11<<8))
+Private Const P_SQLITE_IOERR_NOMEM              As Long = 3082 '(SQLITE_IOERR | (12<<8))
+Private Const P_SQLITE_IOERR_ACCESS             As Long = 3338 '(SQLITE_IOERR | (13<<8))
+Private Const P_SQLITE_IOERR_CHECKRESERVEDLOCK  As Long = 3594 '(SQLITE_IOERR | (14<<8))
+Private Const P_SQLITE_IOERR_LOCK               As Long = 3850 '(SQLITE_IOERR | (15<<8))
+Private Const P_SQLITE_IOERR_CLOSE              As Long = 4106 '(SQLITE_IOERR | (16<<8))
+Private Const P_SQLITE_IOERR_DIR_CLOSE          As Long = 4362 '(SQLITE_IOERR | (17<<8))
+Private Const P_SQLITE_LOCKED_SHAREDCACHE       As Long = 265  '(SQLITE_LOCKED | (1<<8) )
 
 ' Flags For File Open Operations
-Public Const SQLITE_OPEN_READONLY           As Long = 1       ' Ok for sqlite3_open_v2()
-Public Const SQLITE_OPEN_READWRITE          As Long = 2       ' Ok for sqlite3_open_v2()
-Public Const SQLITE_OPEN_CREATE             As Long = 4       ' Ok for sqlite3_open_v2()
-Public Const SQLITE_OPEN_DELETEONCLOSE      As Long = 8       ' VFS only
-Public Const SQLITE_OPEN_EXCLUSIVE          As Long = 16      ' VFS only
-Public Const SQLITE_OPEN_AUTOPROXY          As Long = 32      ' VFS only
-Public Const SQLITE_OPEN_URI                As Long = 64      ' Ok for sqlite3_open_v2()
-Public Const SQLITE_OPEN_MEMORY             As Long = 128     ' Ok for sqlite3_open_v2()
-Public Const SQLITE_OPEN_MAIN_DB            As Long = 256     ' VFS only
-Public Const SQLITE_OPEN_TEMP_DB            As Long = 512     ' VFS only
-Public Const SQLITE_OPEN_TRANSIENT_DB       As Long = 1024    ' VFS only
-Public Const SQLITE_OPEN_MAIN_JOURNAL       As Long = 2048    ' VFS only
-Public Const SQLITE_OPEN_TEMP_JOURNAL       As Long = 4096    ' VFS only
-Public Const SQLITE_OPEN_SUBJOURNAL         As Long = 8192    ' VFS only
-Public Const SQLITE_OPEN_MASTER_JOURNAL     As Long = 16384   ' VFS only
-Public Const SQLITE_OPEN_NOMUTEX            As Long = 32768   ' Ok for sqlite3_open_v2()
-Public Const SQLITE_OPEN_FULLMUTEX          As Long = 65536   ' Ok for sqlite3_open_v2()
-Public Const SQLITE_OPEN_SHAREDCACHE        As Long = 131072  ' Ok for sqlite3_open_v2()
-Public Const SQLITE_OPEN_PRIVATECACHE       As Long = 262144  ' Ok for sqlite3_open_v2()
-Public Const SQLITE_OPEN_WAL                As Long = 524288  ' VFS only
+Private Const P_SQLITE_OPEN_READONLY           As Long = 1       ' Ok for sqlite3_open_v2()
+Private Const P_SQLITE_OPEN_READWRITE          As Long = 2       ' Ok for sqlite3_open_v2()
+Private Const P_SQLITE_OPEN_CREATE             As Long = 4       ' Ok for sqlite3_open_v2()
+Private Const P_SQLITE_OPEN_DELETEONCLOSE      As Long = 8       ' VFS only
+Private Const P_SQLITE_OPEN_EXCLUSIVE          As Long = 16      ' VFS only
+Private Const P_SQLITE_OPEN_AUTOPROXY          As Long = 32      ' VFS only
+Private Const P_SQLITE_OPEN_URI                As Long = 64      ' Ok for sqlite3_open_v2()
+Private Const P_SQLITE_OPEN_MEMORY             As Long = 128     ' Ok for sqlite3_open_v2()
+Private Const P_SQLITE_OPEN_MAIN_DB            As Long = 256     ' VFS only
+Private Const P_SQLITE_OPEN_TEMP_DB            As Long = 512     ' VFS only
+Private Const P_SQLITE_OPEN_TRANSIENT_DB       As Long = 1024    ' VFS only
+Private Const P_SQLITE_OPEN_MAIN_JOURNAL       As Long = 2048    ' VFS only
+Private Const P_SQLITE_OPEN_TEMP_JOURNAL       As Long = 4096    ' VFS only
+Private Const P_SQLITE_OPEN_SUBJOURNAL         As Long = 8192    ' VFS only
+Private Const P_SQLITE_OPEN_MASTER_JOURNAL     As Long = 16384   ' VFS only
+Private Const P_SQLITE_OPEN_NOMUTEX            As Long = 32768   ' Ok for sqlite3_open_v2()
+Private Const P_SQLITE_OPEN_FULLMUTEX          As Long = 65536   ' Ok for sqlite3_open_v2()
+Private Const P_SQLITE_OPEN_SHAREDCACHE        As Long = 131072  ' Ok for sqlite3_open_v2()
+Private Const P_SQLITE_OPEN_PRIVATECACHE       As Long = 262144  ' Ok for sqlite3_open_v2()
+Private Const P_SQLITE_OPEN_WAL                As Long = 524288  ' VFS only
+
+
 
 ' Options for Text and Blob binding
 Private Const SQLITE_STATIC      As Long = 0
@@ -169,9 +185,9 @@ Private Declare PtrSafe Function sqlite3_bind_parameter_index Lib "SQLite3" (ByV
 Private Declare PtrSafe Function sqlite3_bind_null Lib "SQLite3" (ByVal hStmt As LongPtr, ByVal paramIndex As Long) As Long
 Private Declare PtrSafe Function sqlite3_bind_blob Lib "SQLite3" (ByVal hStmt As LongPtr, ByVal paramIndex As Long, ByVal pValue As LongPtr, ByVal nBytes As Long, ByVal pfDelete As LongPtr) As Long
 Private Declare PtrSafe Function sqlite3_bind_zeroblob Lib "SQLite3" (ByVal hStmt As LongPtr, ByVal paramIndex As Long, ByVal nBytes As Long) As Long
-Private Declare PtrSafe Function sqlite3_bind_double Lib "SQLite3" (ByVal hStmt As LongPtr, ByVal paramIndex As Long, ByVal Value As Double) As Long
-Private Declare PtrSafe Function sqlite3_bind_int Lib "SQLite3" (ByVal hStmt As LongPtr, ByVal paramIndex As Long, ByVal Value As Long) As Long
-Private Declare PtrSafe Function sqlite3_bind_int64 Lib "SQLite3" (ByVal hStmt As LongPtr, ByVal paramIndex As Long, ByVal Value As LongLong) As Long
+Private Declare PtrSafe Function sqlite3_bind_double Lib "SQLite3" (ByVal hStmt As LongPtr, ByVal paramIndex As Long, ByVal value As Double) As Long
+Private Declare PtrSafe Function sqlite3_bind_int Lib "SQLite3" (ByVal hStmt As LongPtr, ByVal paramIndex As Long, ByVal value As Long) As Long
+Private Declare PtrSafe Function sqlite3_bind_int64 Lib "SQLite3" (ByVal hStmt As LongPtr, ByVal paramIndex As Long, ByVal value As LongLong) As Long
 Private Declare PtrSafe Function sqlite3_bind_text Lib "SQLite3" (ByVal hStmt As LongPtr, ByVal paramIndex As Long, ByVal psValue As LongPtr, ByVal nBytes As Long, ByVal pfDelete As LongPtr) As Long
 Private Declare PtrSafe Function sqlite3_bind_text16 Lib "SQLite3" (ByVal hStmt As LongPtr, ByVal paramIndex As Long, ByVal pswValue As LongPtr, ByVal nBytes As Long, ByVal pfDelete As LongPtr) As Long
 Private Declare PtrSafe Function sqlite3_bind_value Lib "SQLite3" (ByVal hStmt As LongPtr, ByVal paramIndex As Long, ByVal pSqlite3Value As LongPtr) As Long
@@ -179,7 +195,7 @@ Private Declare PtrSafe Function sqlite3_clear_bindings Lib "SQLite3" (ByVal hSt
 
 'Backup
 Private Declare PtrSafe Function sqlite3_sleep Lib "SQLite3" (ByVal msToSleep As Long) As Long
-Private Declare PtrSafe Function sqlite3_backup_init Lib "SQLite3" (ByVal hDbDest As LongPtr, ByVal zDestName As LongPtr, ByVal hDbSource As LongPtr, ByVal zSourceName As LongPtr) As LongPtr
+Private Declare PtrSafe Function sqlite3_backup_init Lib "SQLite3" (ByVal hDbDest As LongPtr, ByVal zDestName As LongPtr, ByVal hDbSource As LongPtr, ByVal zSourceName As LongPtr) As Long
 Private Declare PtrSafe Function sqlite3_backup_step Lib "SQLite3" (ByVal hBackup As LongPtr, ByVal nPage As Long) As Long
 Private Declare PtrSafe Function sqlite3_backup_finish Lib "SQLite3" (ByVal hBackup As LongPtr) As Long
 Private Declare PtrSafe Function sqlite3_backup_remaining Lib "SQLite3" (ByVal hBackup As LongPtr) As Long
@@ -256,6 +272,264 @@ Private hSQLiteStdCallLibrary As LongPtr
 Private hSQLiteLibrary As Long
 Private hSQLiteStdCallLibrary As Long
 #End If
+
+Private Sub Class_Initialize()
+    If P_MASTER_DATABASE_DIRECTORY = "" Then
+        Call CheckOrChangeDir
+    Else
+        Call CheckOrChangeDir(P_MASTER_DATABASE_DIRECTORY)
+    End If
+End Sub
+
+Public Property Get SQLITE_INIT_OK() As Long
+    SQLITE_INIT_OK = P_SQLITE_INIT_OK
+End Property
+Public Property Get SQLITE_INIT_ERROR() As Long
+    SQLITE_INIT_ERROR = P_SQLITE_INIT_ERROR
+End Property
+Public Property Get SQLITE_INTEGER() As Long
+    SQLITE_INTEGER = P_SQLITE_INTEGER
+End Property
+Public Property Get SQLITE_FLOAT() As Long
+    SQLITE_FLOAT = P_SQLITE_FLOAT
+End Property
+Public Property Get SQLITE_TEXT() As Long
+    SQLITE_TEXT = P_SQLITE_TEXT
+End Property
+Public Property Get SQLITE_BLOB() As Long
+    SQLITE_BLOB = P_SQLITE_BLOB
+End Property
+Public Property Get SQLITE_NULL() As Long
+    SQLITE_NULL = P_SQLITE_NULL
+End Property
+Public Property Get SQLITE_OK() As Long
+    SQLITE_OK = P_SQLITE_OK
+End Property
+Public Property Get SQLITE_ERROR() As Long
+    SQLITE_ERROR = P_SQLITE_ERROR
+End Property
+Public Property Get SQLITE_INTERNAL() As Long
+    SQLITE_INTERNAL = P_SQLITE_INTERNAL
+End Property
+Public Property Get SQLITE_PERM() As Long
+    SQLITE_PERM = P_SQLITE_PERM
+End Property
+Public Property Get SQLITE_ABORT() As Long
+    SQLITE_ABORT = P_SQLITE_ABORT
+End Property
+Public Property Get SQLITE_BUSY() As Long
+    SQLITE_BUSY = P_SQLITE_BUSY
+End Property
+Public Property Get SQLITE_LOCKED() As Long
+    SQLITE_LOCKED = P_SQLITE_LOCKED
+End Property
+Public Property Get SQLITE_NOMEM() As Long
+    SQLITE_NOMEM = P_SQLITE_NOMEM
+End Property
+Public Property Get SQLITE_READONLY() As Long
+    SQLITE_READONLY = P_SQLITE_READONLY
+End Property
+Public Property Get SQLITE_INTERRUPT() As Long
+    SQLITE_INTERRUPT = P_SQLITE_INTERRUPT
+End Property
+Public Property Get SQLITE_IOERR() As Long
+    SQLITE_IOERR = P_SQLITE_IOERR
+End Property
+Public Property Get SQLITE_CORRUPT() As Long
+    SQLITE_CORRUPT = P_SQLITE_CORRUPT
+End Property
+Public Property Get SQLITE_NOTFOUND() As Long
+    SQLITE_NOTFOUND = P_SQLITE_NOTFOUND
+End Property
+Public Property Get SQLITE_FULL() As Long
+    SQLITE_FULL = P_SQLITE_FULL
+End Property
+Public Property Get SQLITE_CANTOPEN() As Long
+    SQLITE_CANTOPEN = P_SQLITE_CANTOPEN
+End Property
+Public Property Get SQLITE_PROTOCOL() As Long
+    SQLITE_PROTOCOL = P_SQLITE_PROTOCOL
+End Property
+Public Property Get SQLITE_EMPTY() As Long
+    SQLITE_EMPTY = P_SQLITE_EMPTY
+End Property
+Public Property Get SQLITE_SCHEMA() As Long
+    SQLITE_SCHEMA = P_SQLITE_SCHEMA
+End Property
+Public Property Get SQLITE_TOOBIG() As Long
+    SQLITE_TOOBIG = P_SQLITE_TOOBIG
+End Property
+Public Property Get SQLITE_CONSTRAINT() As Long
+    SQLITE_CONSTRAINT = P_SQLITE_CONSTRAINT
+End Property
+Public Property Get SQLITE_MISMATCH() As Long
+    SQLITE_MISMATCH = P_SQLITE_MISMATCH
+End Property
+Public Property Get SQLITE_MISUSE() As Long
+    SQLITE_MISUSE = P_SQLITE_MISUSE
+End Property
+Public Property Get SQLITE_NOLFS() As Long
+    SQLITE_NOLFS = P_SQLITE_NOLFS
+End Property
+Public Property Get SQLITE_AUTH() As Long
+    SQLITE_AUTH = P_SQLITE_AUTH
+End Property
+Public Property Get SQLITE_FORMAT() As Long
+    SQLITE_FORMAT = P_SQLITE_FORMAT
+End Property
+Public Property Get SQLITE_RANGE() As Long
+    SQLITE_RANGE = P_SQLITE_RANGE
+End Property
+Public Property Get SQLITE_NOTADB() As Long
+    SQLITE_NOTADB = P_SQLITE_NOTADB
+End Property
+Public Property Get SQLITE_ROW() As Long
+    SQLITE_ROW = P_SQLITE_ROW
+End Property
+Public Property Get SQLITE_DONE() As Long
+    SQLITE_DONE = P_SQLITE_DONE
+End Property
+Public Property Get SQLITE_IOERR_READ() As Long
+    SQLITE_IOERR_READ = P_SQLITE_IOERR_READ
+End Property
+Public Property Get SQLITE_IOERR_SHORT_READ() As Long
+    SQLITE_IOERR_SHORT_READ = P_SQLITE_IOERR_SHORT_READ
+End Property
+Public Property Get SQLITE_IOERR_WRITE() As Long
+    SQLITE_IOERR_WRITE = P_SQLITE_IOERR_WRITE
+End Property
+Public Property Get SQLITE_IOERR_FSYNC() As Long
+    SQLITE_IOERR_FSYNC = P_SQLITE_IOERR_FSYNC
+End Property
+Public Property Get SQLITE_IOERR_DIR_FSYNC() As Long
+    SQLITE_IOERR_DIR_FSYNC = P_SQLITE_IOERR_DIR_FSYNC
+End Property
+Public Property Get SQLITE_IOERR_TRUNCATE() As Long
+    SQLITE_IOERR_TRUNCATE = P_SQLITE_IOERR_TRUNCATE
+End Property
+Public Property Get SQLITE_IOERR_FSTAT() As Long
+    SQLITE_IOERR_FSTAT = P_SQLITE_IOERR_FSTAT
+End Property
+Public Property Get SQLITE_IOERR_UNLOCK() As Long
+    SQLITE_IOERR_UNLOCK = P_SQLITE_IOERR_UNLOCK
+End Property
+Public Property Get SQLITE_IOERR_RDLOCK() As Long
+    SQLITE_IOERR_RDLOCK = P_SQLITE_IOERR_RDLOCK
+End Property
+Public Property Get SQLITE_IOERR_DELETE() As Long
+    SQLITE_IOERR_DELETE = P_SQLITE_IOERR_DELETE
+End Property
+Public Property Get SQLITE_IOERR_BLOCKED() As Long
+    SQLITE_IOERR_BLOCKED = P_SQLITE_IOERR_BLOCKED
+End Property
+Public Property Get SQLITE_IOERR_NOMEM() As Long
+    SQLITE_IOERR_NOMEM = P_SQLITE_IOERR_NOMEM
+End Property
+Public Property Get SQLITE_IOERR_ACCESS() As Long
+    SQLITE_IOERR_ACCESS = P_SQLITE_IOERR_ACCESS
+End Property
+Public Property Get SQLITE_IOERR_CHECKRESERVEDLOCK() As Long
+    SQLITE_IOERR_CHECKRESERVEDLOCK = P_SQLITE_IOERR_CHECKRESERVEDLOCK
+End Property
+Public Property Get SQLITE_IOERR_LOCK() As Long
+    SQLITE_IOERR_LOCK = P_SQLITE_IOERR_LOCK
+End Property
+Public Property Get SQLITE_IOERR_CLOSE() As Long
+    SQLITE_IOERR_CLOSE = P_SQLITE_IOERR_CLOSE
+End Property
+Public Property Get SQLITE_IOERR_DIR_CLOSE() As Long
+    SQLITE_IOERR_DIR_CLOSE = P_SQLITE_IOERR_DIR_CLOSE
+End Property
+Public Property Get SQLITE_LOCKED_SHAREDCACHE() As Long
+    SQLITE_LOCKED_SHAREDCACHE = P_SQLITE_LOCKED_SHAREDCACHE
+End Property
+Public Property Get SQLITE_OPEN_READONLY() As Long
+    SQLITE_OPEN_READONLY = P_SQLITE_OPEN_READONLY
+End Property
+Public Property Get SQLITE_OPEN_READWRITE() As Long
+    SQLITE_OPEN_READWRITE = P_SQLITE_OPEN_READWRITE
+End Property
+Public Property Get SQLITE_OPEN_CREATE() As Long
+    SQLITE_OPEN_CREATE = P_SQLITE_OPEN_CREATE
+End Property
+Public Property Get SQLITE_OPEN_DELETEONCLOSE() As Long
+    SQLITE_OPEN_DELETEONCLOSE = P_SQLITE_OPEN_DELETEONCLOSE
+End Property
+Public Property Get SQLITE_OPEN_EXCLUSIVE() As Long
+    SQLITE_OPEN_EXCLUSIVE = P_SQLITE_OPEN_EXCLUSIVE
+End Property
+Public Property Get SQLITE_OPEN_AUTOPROXY() As Long
+    SQLITE_OPEN_AUTOPROXY = P_SQLITE_OPEN_AUTOPROXY
+End Property
+Public Property Get SQLITE_OPEN_URI() As Long
+    SQLITE_OPEN_URI = P_SQLITE_OPEN_URI
+End Property
+Public Property Get SQLITE_OPEN_MEMORY() As Long
+    SQLITE_OPEN_MEMORY = P_SQLITE_OPEN_MEMORY
+End Property
+Public Property Get SQLITE_OPEN_MAIN_DB() As Long
+    SQLITE_OPEN_MAIN_DB = P_SQLITE_OPEN_MAIN_DB
+End Property
+Public Property Get SQLITE_OPEN_TEMP_DB() As Long
+    SQLITE_OPEN_TEMP_DB = P_SQLITE_OPEN_TEMP_DB
+End Property
+Public Property Get SQLITE_OPEN_TRANSIENT_DB() As Long
+    SQLITE_OPEN_TRANSIENT_DB = P_SQLITE_OPEN_TRANSIENT_DB
+End Property
+Public Property Get SQLITE_OPEN_MAIN_JOURNAL() As Long
+    SQLITE_OPEN_MAIN_JOURNAL = P_SQLITE_OPEN_MAIN_JOURNAL
+End Property
+Public Property Get SQLITE_OPEN_TEMP_JOURNAL() As Long
+    SQLITE_OPEN_TEMP_JOURNAL = P_SQLITE_OPEN_TEMP_JOURNAL
+End Property
+Public Property Get SQLITE_OPEN_SUBJOURNAL() As Long
+    SQLITE_OPEN_SUBJOURNAL = P_SQLITE_OPEN_SUBJOURNAL
+End Property
+Public Property Get SQLITE_OPEN_MASTER_JOURNAL() As Long
+    SQLITE_OPEN_MASTER_JOURNAL = P_SQLITE_OPEN_MASTER_JOURNAL
+End Property
+Public Property Get SQLITE_OPEN_NOMUTEX() As Long
+    SQLITE_OPEN_NOMUTEX = P_SQLITE_OPEN_NOMUTEX
+End Property
+Public Property Get SQLITE_OPEN_FULLMUTEX() As Long
+    SQLITE_OPEN_FULLMUTEX = P_SQLITE_OPEN_FULLMUTEX
+End Property
+Public Property Get SQLITE_OPEN_SHAREDCACHE() As Long
+    SQLITE_OPEN_SHAREDCACHE = P_SQLITE_OPEN_SHAREDCACHE
+End Property
+Public Property Get SQLITE_OPEN_PRIVATECACHE() As Long
+    SQLITE_OPEN_PRIVATECACHE = P_SQLITE_OPEN_PRIVATECACHE
+End Property
+Public Property Get SQLITE_OPEN_WAL() As Long
+    SQLITE_OPEN_WAL = P_SQLITE_OPEN_WAL
+End Property
+
+Private Sub CheckOrChangeDir(Optional MasterDirectory As String = "")
+    If MasterDirectory = "" Then
+        If CurDir <> ThisWorkbook.Path Then
+            Me.DatabaseDirectory = ThisWorkbook.Path
+        End If
+    Else
+        Me.DatabaseDirectory = MasterDirectory
+    End If
+End Sub
+
+Public Property Let DatabaseDirectory(value As String)
+    If P_MASTER_DATABASE_DIRECTORY = "" Then
+        pDatabaseDirectory = value
+        ChDir pDatabaseDirectory
+    Else
+        Err.Raise Number:=P_MASTER_DIRECTORY_SET, Description:="Constant variable Master directory set in class module. It must be deleted to overwrite the database directory."
+    End If
+End Property
+
+Public Property Get DatabaseDirectory() As String
+    If P_MASTER_DATABASE_DIRECTORY = "" Then
+        DatabaseDirectory = pDatabaseDirectory
+    Else
+        DatabaseDirectory = "Master directory: " & P_MASTER_DATABASE_DIRECTORY
+    End If
+End Property
 
 Public Function SQLite3Initialize(Optional ByVal libDir As String) As Long
     ' A nice option here is to call SetDllDirectory, but that API is only available since Windows XP SP1.
@@ -509,45 +783,45 @@ End Function
 ' Statement bindings
 
 #If Win64 Then
-Public Function SQLite3BindText(ByVal stmtHandle As LongPtr, ByVal OneBasedParamIndex As Long, ByVal Value As String) As Long
+Public Function SQLite3BindText(ByVal stmtHandle As LongPtr, ByVal OneBasedParamIndex As Long, ByVal value As String) As Long
 #Else
-Public Function SQLite3BindText(ByVal stmtHandle As Long, ByVal OneBasedParamIndex As Long, ByVal Value As String) As Long
+Public Function SQLite3BindText(ByVal stmtHandle As Long, ByVal OneBasedParamIndex As Long, ByVal value As String) As Long
 #End If
-    SQLite3BindText = sqlite3_bind_text16(stmtHandle, OneBasedParamIndex, StrPtr(Value), -1, SQLITE_TRANSIENT)
+    SQLite3BindText = sqlite3_bind_text16(stmtHandle, OneBasedParamIndex, StrPtr(value), -1, SQLITE_TRANSIENT)
 End Function
 
 #If Win64 Then
-Public Function SQLite3BindDouble(ByVal stmtHandle As LongPtr, ByVal OneBasedParamIndex As Long, ByVal Value As Double) As Long
+Public Function SQLite3BindDouble(ByVal stmtHandle As LongPtr, ByVal OneBasedParamIndex As Long, ByVal value As Double) As Long
 #Else
-Public Function SQLite3BindDouble(ByVal stmtHandle As Long, ByVal OneBasedParamIndex As Long, ByVal Value As Double) As Long
+Public Function SQLite3BindDouble(ByVal stmtHandle As Long, ByVal OneBasedParamIndex As Long, ByVal value As Double) As Long
 #End If
-    SQLite3BindDouble = sqlite3_bind_double(stmtHandle, OneBasedParamIndex, Value)
+    SQLite3BindDouble = sqlite3_bind_double(stmtHandle, OneBasedParamIndex, value)
 End Function
 
 #If Win64 Then
-Public Function SQLite3BindInt32(ByVal stmtHandle As LongPtr, ByVal OneBasedParamIndex As Long, ByVal Value As Long) As Long
+Public Function SQLite3BindInt32(ByVal stmtHandle As LongPtr, ByVal OneBasedParamIndex As Long, ByVal value As Long) As Long
 #Else
-Public Function SQLite3BindInt32(ByVal stmtHandle As Long, ByVal OneBasedParamIndex As Long, ByVal Value As Long) As Long
+Public Function SQLite3BindInt32(ByVal stmtHandle As Long, ByVal OneBasedParamIndex As Long, ByVal value As Long) As Long
 #End If
-    SQLite3BindInt32 = sqlite3_bind_int(stmtHandle, OneBasedParamIndex, Value)
+    SQLite3BindInt32 = sqlite3_bind_int(stmtHandle, OneBasedParamIndex, value)
 End Function
 
 #If Win64 Then
-Public Function SQLite3BindDate(ByVal stmtHandle As LongPtr, ByVal OneBasedParamIndex As Long, ByVal Value As Date) As Long
+Public Function SQLite3BindDate(ByVal stmtHandle As LongPtr, ByVal OneBasedParamIndex As Long, ByVal value As Date) As Long
 #Else
-Public Function SQLite3BindDate(ByVal stmtHandle As Long, ByVal OneBasedParamIndex As Long, ByVal Value As Date) As Long
+Public Function SQLite3BindDate(ByVal stmtHandle As Long, ByVal OneBasedParamIndex As Long, ByVal value As Date) As Long
 #End If
-    SQLite3BindDate = sqlite3_bind_double(stmtHandle, OneBasedParamIndex, ToJulianDay(Value))
+    SQLite3BindDate = sqlite3_bind_double(stmtHandle, OneBasedParamIndex, ToJulianDay(value))
 End Function
 
 #If Win64 Then
-Public Function SQLite3BindBlob(ByVal stmtHandle As LongPtr, ByVal OneBasedParamIndex As Long, ByRef Value() As Byte) As Long
+Public Function SQLite3BindBlob(ByVal stmtHandle As LongPtr, ByVal OneBasedParamIndex As Long, ByRef value() As Byte) As Long
 #Else
-Public Function SQLite3BindBlob(ByVal stmtHandle As Long, ByVal OneBasedParamIndex As Long, ByRef Value() As Byte) As Long
+Public Function SQLite3BindBlob(ByVal stmtHandle As Long, ByVal OneBasedParamIndex As Long, ByRef value() As Byte) As Long
 #End If
     Dim length As Long
-    length = UBound(Value) - LBound(Value) + 1
-    SQLite3BindBlob = sqlite3_bind_blob(stmtHandle, OneBasedParamIndex, VarPtr(Value(0)), length, SQLITE_TRANSIENT)
+    length = UBound(value) - LBound(value) + 1
+    SQLite3BindBlob = sqlite3_bind_blob(stmtHandle, OneBasedParamIndex, VarPtr(value(0)), length, SQLITE_TRANSIENT)
 End Function
 
 #If Win64 Then
