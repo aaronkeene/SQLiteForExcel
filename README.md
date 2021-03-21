@@ -9,3 +9,7 @@ This project is a forked version of Govert's *SQLite for Excel*. The main differ
 # Known bugs
 
 One of the test methods in cSqlite3Demo, TestBackup, throws an error. It is the only method among the original testing method that throws an error. I tested the method in the original code, and it also threw an error. So the error is not a result of refactoring. Since the method was throwing an error, the calling code in the AllTests method has been commented out. However, the original code for the method is still there.
+
+# Potential bugs
+
+This code may not be compatible with 32-bit versions of Office. If you need 32-bit compatability, I would recommend using the code in Govert's original project.
