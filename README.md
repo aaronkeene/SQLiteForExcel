@@ -1,5 +1,5 @@
 # Overview
-This project is a forked version of *SQLite for Excel*. The main difference is that the code has been refactored to uses classes as opposed to the standard modules that the original project utilized. The original code was stored in two modules: Sqlite3 and Sqlite3Demo. I've since updated this to the class modules cSqlite3 and cSqlite3Demo respectively.
+This project is a forked version of *SQLite for Excel*. The main difference is that the code has been refactored to uses classes as opposed to the standard modules that the original project utilized. The original code was stored in two modules: Sqlite3 and Sqlite3Demo. I've since updated these files to the class modules cSqlite3 and cSqlite3Demo respectively.
 
 # Motivations for refactoring
 
