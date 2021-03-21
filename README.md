@@ -3,7 +3,7 @@ This project is a forked version of *SQLite for Excel*. The main difference is t
 
 # Motivations for refactoring
 
-1. There was a bug in the original code that was related to the directory the Excel file was stored in. To fix this, you'd have to add code to update the correct directory and call this method first or add code to each public method that does this. Code that does this must be run before any of those public methods can be utilized. This can be very easily done using a constructor with class modules. So that was the primary motivation for refactoring to classes.
+1. There was a bug in the original code that was related to the directory the Excel file was stored in. If the current path was not the same path as the workbook's current path, the code would throw an error. To fix this, you'd have to add code to update the correct directory and call this method first or add code to each public method that does this. Code that does this must be run before any of those public methods can be utilized. This can be very easily done using a constructor with class modules, which is what I did. I've since added the private CheckOrChangeDir method which fixes this. So that was the primary motivation for refactoring to classes.
 2. Using class modules allows you to use interfaces and polymorphism which make for easy refactoring, unit testing, etc. At some point in the future I will refactor the code to use interfaces so that this can be done.
 
 # Known bugs
