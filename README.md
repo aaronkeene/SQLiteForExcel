@@ -16,3 +16,18 @@ This project is a forked version of Govert's *SQLite for Excel*. The main differ
 # Potential bugs
 
 This code may not be compatible with 32-bit versions of Office. If you need 32-bit compatability and this project doesn't work, I would recommend using the code in Govert's original project.
+
+# Example
+
+This is sample code taken from the Main module which is included:
+
+    Sub Main()
+        Dim sqlite As ISqlite3
+        Dim demo As cSqlite3Demo
+        
+        Set sqlite = New cSqlite3
+        Set demo = New cSqlite3Demo
+        
+        demo.init sqlite
+        demo.AllTests
+    End Sub
