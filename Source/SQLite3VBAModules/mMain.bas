@@ -1,7 +1,7 @@
-Attribute VB_Name = "Main"
+Attribute VB_Name = "mMain"
 Option Explicit
 
-Sub subby()
+Sub Main()
     Dim sqlite As ISqlite3
     Dim demo As cSqlite3Demo
     
