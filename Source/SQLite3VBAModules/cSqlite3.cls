@@ -12,6 +12,8 @@ Option Explicit
 ' Notes:
 ' Microsoft uses UTF-16, little endian byte order.
 
+Implements ISqlite3
+
 Private Const P_MASTER_DATABASE_DIRECTORY As String = ""
 
 Private Const P_MASTER_DIRECTORY_SET As Long = vbObjectError + 513
@@ -275,246 +277,246 @@ Private hSQLiteStdCallLibrary As Long
 
 Private Sub Class_Initialize()
     If P_MASTER_DATABASE_DIRECTORY = "" Then
-        Call CheckOrChangeDir
+        Call ISqlite3_CheckOrChangeDir
     Else
-        Call CheckOrChangeDir(P_MASTER_DATABASE_DIRECTORY)
+        Call ISqlite3_CheckOrChangeDir(P_MASTER_DATABASE_DIRECTORY)
     End If
 End Sub
 
-Public Property Get SQLITE_INIT_OK() As Long
-    SQLITE_INIT_OK = P_SQLITE_INIT_OK
+Public Property Get Isqlite3_SqliteInitOk() As Long
+    Isqlite3_SqliteInitOk = P_SQLITE_INIT_OK
 End Property
-Public Property Get SQLITE_INIT_ERROR() As Long
-    SQLITE_INIT_ERROR = P_SQLITE_INIT_ERROR
+Public Property Get Isqlite3_SqliteInitError() As Long
+    Isqlite3_SqliteInitError = P_SQLITE_INIT_ERROR
 End Property
-Public Property Get SQLITE_INTEGER() As Long
-    SQLITE_INTEGER = P_SQLITE_INTEGER
+Public Property Get Isqlite3_SqliteInteger() As Long
+    Isqlite3_SqliteInteger = P_SQLITE_INTEGER
 End Property
-Public Property Get SQLITE_FLOAT() As Long
-    SQLITE_FLOAT = P_SQLITE_FLOAT
+Public Property Get Isqlite3_SqliteFloat() As Long
+    Isqlite3_SqliteFloat = P_SQLITE_FLOAT
 End Property
-Public Property Get SQLITE_TEXT() As Long
-    SQLITE_TEXT = P_SQLITE_TEXT
+Public Property Get Isqlite3_SqliteText() As Long
+    Isqlite3_SqliteText = P_SQLITE_TEXT
 End Property
-Public Property Get SQLITE_BLOB() As Long
-    SQLITE_BLOB = P_SQLITE_BLOB
+Public Property Get Isqlite3_SqliteBlob() As Long
+    Isqlite3_SqliteBlob = P_SQLITE_BLOB
 End Property
-Public Property Get SQLITE_NULL() As Long
-    SQLITE_NULL = P_SQLITE_NULL
+Public Property Get Isqlite3_SqliteNull() As Long
+    Isqlite3_SqliteNull = P_SQLITE_NULL
 End Property
-Public Property Get SQLITE_OK() As Long
-    SQLITE_OK = P_SQLITE_OK
+Public Property Get Isqlite3_SqliteOk() As Long
+    Isqlite3_SqliteOk = P_SQLITE_OK
 End Property
-Public Property Get SQLITE_ERROR() As Long
-    SQLITE_ERROR = P_SQLITE_ERROR
+Public Property Get Isqlite3_SqliteError() As Long
+    Isqlite3_SqliteError = P_SQLITE_ERROR
 End Property
-Public Property Get SQLITE_INTERNAL() As Long
-    SQLITE_INTERNAL = P_SQLITE_INTERNAL
+Public Property Get Isqlite3_SqliteInternal() As Long
+    Isqlite3_SqliteInternal = P_SQLITE_INTERNAL
 End Property
-Public Property Get SQLITE_PERM() As Long
-    SQLITE_PERM = P_SQLITE_PERM
+Public Property Get Isqlite3_SqlitePerm() As Long
+    Isqlite3_SqlitePerm = P_SQLITE_PERM
 End Property
-Public Property Get SQLITE_ABORT() As Long
-    SQLITE_ABORT = P_SQLITE_ABORT
+Public Property Get Isqlite3_SqliteAbort() As Long
+    Isqlite3_SqliteAbort = P_SQLITE_ABORT
 End Property
-Public Property Get SQLITE_BUSY() As Long
-    SQLITE_BUSY = P_SQLITE_BUSY
+Public Property Get Isqlite3_SqliteBusy() As Long
+    Isqlite3_SqliteBusy = P_SQLITE_BUSY
 End Property
-Public Property Get SQLITE_LOCKED() As Long
-    SQLITE_LOCKED = P_SQLITE_LOCKED
+Public Property Get Isqlite3_SqliteLocked() As Long
+    Isqlite3_SqliteLocked = P_SQLITE_LOCKED
 End Property
-Public Property Get SQLITE_NOMEM() As Long
-    SQLITE_NOMEM = P_SQLITE_NOMEM
+Public Property Get Isqlite3_SqliteNomem() As Long
+    Isqlite3_SqliteNomem = P_SQLITE_NOMEM
 End Property
-Public Property Get SQLITE_READONLY() As Long
-    SQLITE_READONLY = P_SQLITE_READONLY
+Public Property Get Isqlite3_SqliteReadonly() As Long
+    Isqlite3_SqliteReadonly = P_SQLITE_READONLY
 End Property
-Public Property Get SQLITE_INTERRUPT() As Long
-    SQLITE_INTERRUPT = P_SQLITE_INTERRUPT
+Public Property Get Isqlite3_SqliteInterrupt() As Long
+    Isqlite3_SqliteInterrupt = P_SQLITE_INTERRUPT
 End Property
-Public Property Get SQLITE_IOERR() As Long
-    SQLITE_IOERR = P_SQLITE_IOERR
+Public Property Get Isqlite3_SqliteIoerr() As Long
+    Isqlite3_SqliteIoerr = P_SQLITE_IOERR
 End Property
-Public Property Get SQLITE_CORRUPT() As Long
-    SQLITE_CORRUPT = P_SQLITE_CORRUPT
+Public Property Get Isqlite3_SqliteCorrupt() As Long
+    Isqlite3_SqliteCorrupt = P_SQLITE_CORRUPT
 End Property
-Public Property Get SQLITE_NOTFOUND() As Long
-    SQLITE_NOTFOUND = P_SQLITE_NOTFOUND
+Public Property Get Isqlite3_SqliteNotfound() As Long
+    Isqlite3_SqliteNotfound = P_SQLITE_NOTFOUND
 End Property
-Public Property Get SQLITE_FULL() As Long
-    SQLITE_FULL = P_SQLITE_FULL
+Public Property Get Isqlite3_SqliteFull() As Long
+    Isqlite3_SqliteFull = P_SQLITE_FULL
 End Property
-Public Property Get SQLITE_CANTOPEN() As Long
-    SQLITE_CANTOPEN = P_SQLITE_CANTOPEN
+Public Property Get Isqlite3_SqliteCantopen() As Long
+    Isqlite3_SqliteCantopen = P_SQLITE_CANTOPEN
 End Property
-Public Property Get SQLITE_PROTOCOL() As Long
-    SQLITE_PROTOCOL = P_SQLITE_PROTOCOL
+Public Property Get Isqlite3_SqliteProtocol() As Long
+    Isqlite3_SqliteProtocol = P_SQLITE_PROTOCOL
 End Property
-Public Property Get SQLITE_EMPTY() As Long
-    SQLITE_EMPTY = P_SQLITE_EMPTY
+Public Property Get Isqlite3_SqliteEmpty() As Long
+    Isqlite3_SqliteEmpty = P_SQLITE_EMPTY
 End Property
-Public Property Get SQLITE_SCHEMA() As Long
-    SQLITE_SCHEMA = P_SQLITE_SCHEMA
+Public Property Get Isqlite3_SqliteSchema() As Long
+    Isqlite3_SqliteSchema = P_SQLITE_SCHEMA
 End Property
-Public Property Get SQLITE_TOOBIG() As Long
-    SQLITE_TOOBIG = P_SQLITE_TOOBIG
+Public Property Get Isqlite3_SqliteToobig() As Long
+    Isqlite3_SqliteToobig = P_SQLITE_TOOBIG
 End Property
-Public Property Get SQLITE_CONSTRAINT() As Long
-    SQLITE_CONSTRAINT = P_SQLITE_CONSTRAINT
+Public Property Get Isqlite3_SqliteConstraint() As Long
+    Isqlite3_SqliteConstraint = P_SQLITE_CONSTRAINT
 End Property
-Public Property Get SQLITE_MISMATCH() As Long
-    SQLITE_MISMATCH = P_SQLITE_MISMATCH
+Public Property Get Isqlite3_SqliteMismatch() As Long
+    Isqlite3_SqliteMismatch = P_SQLITE_MISMATCH
 End Property
-Public Property Get SQLITE_MISUSE() As Long
-    SQLITE_MISUSE = P_SQLITE_MISUSE
+Public Property Get Isqlite3_SqliteMisuse() As Long
+    Isqlite3_SqliteMisuse = P_SQLITE_MISUSE
 End Property
-Public Property Get SQLITE_NOLFS() As Long
-    SQLITE_NOLFS = P_SQLITE_NOLFS
+Public Property Get Isqlite3_SqliteNolfs() As Long
+    Isqlite3_SqliteNolfs = P_SQLITE_NOLFS
 End Property
-Public Property Get SQLITE_AUTH() As Long
-    SQLITE_AUTH = P_SQLITE_AUTH
+Public Property Get Isqlite3_SqliteAuth() As Long
+    Isqlite3_SqliteAuth = P_SQLITE_AUTH
 End Property
-Public Property Get SQLITE_FORMAT() As Long
-    SQLITE_FORMAT = P_SQLITE_FORMAT
+Public Property Get Isqlite3_SqliteFormat() As Long
+    Isqlite3_SqliteFormat = P_SQLITE_FORMAT
 End Property
-Public Property Get SQLITE_RANGE() As Long
-    SQLITE_RANGE = P_SQLITE_RANGE
+Public Property Get Isqlite3_SqliteRange() As Long
+    Isqlite3_SqliteRange = P_SQLITE_RANGE
 End Property
-Public Property Get SQLITE_NOTADB() As Long
-    SQLITE_NOTADB = P_SQLITE_NOTADB
+Public Property Get Isqlite3_SqliteNotadb() As Long
+    Isqlite3_SqliteNotadb = P_SQLITE_NOTADB
 End Property
-Public Property Get SQLITE_ROW() As Long
-    SQLITE_ROW = P_SQLITE_ROW
+Public Property Get Isqlite3_SqliteRow() As Long
+    Isqlite3_SqliteRow = P_SQLITE_ROW
 End Property
-Public Property Get SQLITE_DONE() As Long
-    SQLITE_DONE = P_SQLITE_DONE
+Public Property Get Isqlite3_SqliteDone() As Long
+    Isqlite3_SqliteDone = P_SQLITE_DONE
 End Property
-Public Property Get SQLITE_IOERR_READ() As Long
-    SQLITE_IOERR_READ = P_SQLITE_IOERR_READ
+Public Property Get Isqlite3_SqliteIoerrRead() As Long
+    Isqlite3_SqliteIoerrRead = P_SQLITE_IOERR_READ
 End Property
-Public Property Get SQLITE_IOERR_SHORT_READ() As Long
-    SQLITE_IOERR_SHORT_READ = P_SQLITE_IOERR_SHORT_READ
+Public Property Get Isqlite3_SqliteIoerrShortRead() As Long
+    Isqlite3_SqliteIoerrShortRead = P_SQLITE_IOERR_SHORT_READ
 End Property
-Public Property Get SQLITE_IOERR_WRITE() As Long
-    SQLITE_IOERR_WRITE = P_SQLITE_IOERR_WRITE
+Public Property Get Isqlite3_SqliteIoerrWrite() As Long
+    Isqlite3_SqliteIoerrWrite = P_SQLITE_IOERR_WRITE
 End Property
-Public Property Get SQLITE_IOERR_FSYNC() As Long
-    SQLITE_IOERR_FSYNC = P_SQLITE_IOERR_FSYNC
+Public Property Get Isqlite3_SqliteIoerrFsync() As Long
+    Isqlite3_SqliteIoerrFsync = P_SQLITE_IOERR_FSYNC
 End Property
-Public Property Get SQLITE_IOERR_DIR_FSYNC() As Long
-    SQLITE_IOERR_DIR_FSYNC = P_SQLITE_IOERR_DIR_FSYNC
+Public Property Get Isqlite3_SqliteIoerrDirFsync() As Long
+    Isqlite3_SqliteIoerrDirFsync = P_SQLITE_IOERR_DIR_FSYNC
 End Property
-Public Property Get SQLITE_IOERR_TRUNCATE() As Long
-    SQLITE_IOERR_TRUNCATE = P_SQLITE_IOERR_TRUNCATE
+Public Property Get Isqlite3_SqliteIoerrTruncate() As Long
+    Isqlite3_SqliteIoerrTruncate = P_SQLITE_IOERR_TRUNCATE
 End Property
-Public Property Get SQLITE_IOERR_FSTAT() As Long
-    SQLITE_IOERR_FSTAT = P_SQLITE_IOERR_FSTAT
+Public Property Get Isqlite3_SqliteIoerrFstat() As Long
+    Isqlite3_SqliteIoerrFstat = P_SQLITE_IOERR_FSTAT
 End Property
-Public Property Get SQLITE_IOERR_UNLOCK() As Long
-    SQLITE_IOERR_UNLOCK = P_SQLITE_IOERR_UNLOCK
+Public Property Get Isqlite3_SqliteIoerrUnlock() As Long
+    Isqlite3_SqliteIoerrUnlock = P_SQLITE_IOERR_UNLOCK
 End Property
-Public Property Get SQLITE_IOERR_RDLOCK() As Long
-    SQLITE_IOERR_RDLOCK = P_SQLITE_IOERR_RDLOCK
+Public Property Get Isqlite3_SqliteIoerrRdlock() As Long
+    Isqlite3_SqliteIoerrRdlock = P_SQLITE_IOERR_RDLOCK
 End Property
-Public Property Get SQLITE_IOERR_DELETE() As Long
-    SQLITE_IOERR_DELETE = P_SQLITE_IOERR_DELETE
+Public Property Get Isqlite3_SqliteIoerrDelete() As Long
+    Isqlite3_SqliteIoerrDelete = P_SQLITE_IOERR_DELETE
 End Property
-Public Property Get SQLITE_IOERR_BLOCKED() As Long
-    SQLITE_IOERR_BLOCKED = P_SQLITE_IOERR_BLOCKED
+Public Property Get Isqlite3_SqliteIoerrBlocked() As Long
+    Isqlite3_SqliteIoerrBlocked = P_SQLITE_IOERR_BLOCKED
 End Property
-Public Property Get SQLITE_IOERR_NOMEM() As Long
-    SQLITE_IOERR_NOMEM = P_SQLITE_IOERR_NOMEM
+Public Property Get Isqlite3_SqliteIoerrNomem() As Long
+    Isqlite3_SqliteIoerrNomem = P_SQLITE_IOERR_NOMEM
 End Property
-Public Property Get SQLITE_IOERR_ACCESS() As Long
-    SQLITE_IOERR_ACCESS = P_SQLITE_IOERR_ACCESS
+Public Property Get Isqlite3_SqliteIoerrAccess() As Long
+    Isqlite3_SqliteIoerrAccess = P_SQLITE_IOERR_ACCESS
 End Property
-Public Property Get SQLITE_IOERR_CHECKRESERVEDLOCK() As Long
-    SQLITE_IOERR_CHECKRESERVEDLOCK = P_SQLITE_IOERR_CHECKRESERVEDLOCK
+Public Property Get Isqlite3_SqliteIoerrCheckreservedlock() As Long
+    Isqlite3_SqliteIoerrCheckreservedlock = P_SQLITE_IOERR_CHECKRESERVEDLOCK
 End Property
-Public Property Get SQLITE_IOERR_LOCK() As Long
-    SQLITE_IOERR_LOCK = P_SQLITE_IOERR_LOCK
+Public Property Get Isqlite3_SqliteIoerrLock() As Long
+    Isqlite3_SqliteIoerrLock = P_SQLITE_IOERR_LOCK
 End Property
-Public Property Get SQLITE_IOERR_CLOSE() As Long
-    SQLITE_IOERR_CLOSE = P_SQLITE_IOERR_CLOSE
+Public Property Get Isqlite3_SqliteIoerrClose() As Long
+    Isqlite3_SqliteIoerrClose = P_SQLITE_IOERR_CLOSE
 End Property
-Public Property Get SQLITE_IOERR_DIR_CLOSE() As Long
-    SQLITE_IOERR_DIR_CLOSE = P_SQLITE_IOERR_DIR_CLOSE
+Public Property Get Isqlite3_SqliteIoerrDirClose() As Long
+    Isqlite3_SqliteIoerrDirClose = P_SQLITE_IOERR_DIR_CLOSE
 End Property
-Public Property Get SQLITE_LOCKED_SHAREDCACHE() As Long
-    SQLITE_LOCKED_SHAREDCACHE = P_SQLITE_LOCKED_SHAREDCACHE
+Public Property Get Isqlite3_SqliteLockedSharedcache() As Long
+    Isqlite3_SqliteLockedSharedcache = P_SQLITE_LOCKED_SHAREDCACHE
 End Property
-Public Property Get SQLITE_OPEN_READONLY() As Long
-    SQLITE_OPEN_READONLY = P_SQLITE_OPEN_READONLY
+Public Property Get Isqlite3_SqliteOpenReadonly() As Long
+    Isqlite3_SqliteOpenReadonly = P_SQLITE_OPEN_READONLY
 End Property
-Public Property Get SQLITE_OPEN_READWRITE() As Long
-    SQLITE_OPEN_READWRITE = P_SQLITE_OPEN_READWRITE
+Public Property Get Isqlite3_SqliteOpenReadwrite() As Long
+    Isqlite3_SqliteOpenReadwrite = P_SQLITE_OPEN_READWRITE
 End Property
-Public Property Get SQLITE_OPEN_CREATE() As Long
-    SQLITE_OPEN_CREATE = P_SQLITE_OPEN_CREATE
+Public Property Get Isqlite3_SqliteOpenCreate() As Long
+    Isqlite3_SqliteOpenCreate = P_SQLITE_OPEN_CREATE
 End Property
-Public Property Get SQLITE_OPEN_DELETEONCLOSE() As Long
-    SQLITE_OPEN_DELETEONCLOSE = P_SQLITE_OPEN_DELETEONCLOSE
+Public Property Get Isqlite3_SqliteOpenDeleteonclose() As Long
+    Isqlite3_SqliteOpenDeleteonclose = P_SQLITE_OPEN_DELETEONCLOSE
 End Property
-Public Property Get SQLITE_OPEN_EXCLUSIVE() As Long
-    SQLITE_OPEN_EXCLUSIVE = P_SQLITE_OPEN_EXCLUSIVE
+Public Property Get Isqlite3_SqliteOpenExclusive() As Long
+    Isqlite3_SqliteOpenExclusive = P_SQLITE_OPEN_EXCLUSIVE
 End Property
-Public Property Get SQLITE_OPEN_AUTOPROXY() As Long
-    SQLITE_OPEN_AUTOPROXY = P_SQLITE_OPEN_AUTOPROXY
+Public Property Get Isqlite3_SqliteOpenAutoproxy() As Long
+    Isqlite3_SqliteOpenAutoproxy = P_SQLITE_OPEN_AUTOPROXY
 End Property
-Public Property Get SQLITE_OPEN_URI() As Long
-    SQLITE_OPEN_URI = P_SQLITE_OPEN_URI
+Public Property Get Isqlite3_SqliteOpenUri() As Long
+    Isqlite3_SqliteOpenUri = P_SQLITE_OPEN_URI
 End Property
-Public Property Get SQLITE_OPEN_MEMORY() As Long
-    SQLITE_OPEN_MEMORY = P_SQLITE_OPEN_MEMORY
+Public Property Get Isqlite3_SqliteOpenMemory() As Long
+    Isqlite3_SqliteOpenMemory = P_SQLITE_OPEN_MEMORY
 End Property
-Public Property Get SQLITE_OPEN_MAIN_DB() As Long
-    SQLITE_OPEN_MAIN_DB = P_SQLITE_OPEN_MAIN_DB
+Public Property Get Isqlite3_SqliteOpenMainDb() As Long
+    Isqlite3_SqliteOpenMainDb = P_SQLITE_OPEN_MAIN_DB
 End Property
-Public Property Get SQLITE_OPEN_TEMP_DB() As Long
-    SQLITE_OPEN_TEMP_DB = P_SQLITE_OPEN_TEMP_DB
+Public Property Get Isqlite3_SqliteOpenTempDb() As Long
+    Isqlite3_SqliteOpenTempDb = P_SQLITE_OPEN_TEMP_DB
 End Property
-Public Property Get SQLITE_OPEN_TRANSIENT_DB() As Long
-    SQLITE_OPEN_TRANSIENT_DB = P_SQLITE_OPEN_TRANSIENT_DB
+Public Property Get Isqlite3_SqliteOpenTransientDb() As Long
+    Isqlite3_SqliteOpenTransientDb = P_SQLITE_OPEN_TRANSIENT_DB
 End Property
-Public Property Get SQLITE_OPEN_MAIN_JOURNAL() As Long
-    SQLITE_OPEN_MAIN_JOURNAL = P_SQLITE_OPEN_MAIN_JOURNAL
+Public Property Get Isqlite3_SqliteOpenMainJournal() As Long
+    Isqlite3_SqliteOpenMainJournal = P_SQLITE_OPEN_MAIN_JOURNAL
 End Property
-Public Property Get SQLITE_OPEN_TEMP_JOURNAL() As Long
-    SQLITE_OPEN_TEMP_JOURNAL = P_SQLITE_OPEN_TEMP_JOURNAL
+Public Property Get Isqlite3_SqliteOpenTempJournal() As Long
+    Isqlite3_SqliteOpenTempJournal = P_SQLITE_OPEN_TEMP_JOURNAL
 End Property
-Public Property Get SQLITE_OPEN_SUBJOURNAL() As Long
-    SQLITE_OPEN_SUBJOURNAL = P_SQLITE_OPEN_SUBJOURNAL
+Public Property Get Isqlite3_SqliteOpenSubjournal() As Long
+    Isqlite3_SqliteOpenSubjournal = P_SQLITE_OPEN_SUBJOURNAL
 End Property
-Public Property Get SQLITE_OPEN_MASTER_JOURNAL() As Long
-    SQLITE_OPEN_MASTER_JOURNAL = P_SQLITE_OPEN_MASTER_JOURNAL
+Public Property Get Isqlite3_SqliteOpenMasterJournal() As Long
+    Isqlite3_SqliteOpenMasterJournal = P_SQLITE_OPEN_MASTER_JOURNAL
 End Property
-Public Property Get SQLITE_OPEN_NOMUTEX() As Long
-    SQLITE_OPEN_NOMUTEX = P_SQLITE_OPEN_NOMUTEX
+Public Property Get Isqlite3_SqliteOpenNomutex() As Long
+    Isqlite3_SqliteOpenNomutex = P_SQLITE_OPEN_NOMUTEX
 End Property
-Public Property Get SQLITE_OPEN_FULLMUTEX() As Long
-    SQLITE_OPEN_FULLMUTEX = P_SQLITE_OPEN_FULLMUTEX
+Public Property Get Isqlite3_SqliteOpenFullmutex() As Long
+    Isqlite3_SqliteOpenFullmutex = P_SQLITE_OPEN_FULLMUTEX
 End Property
-Public Property Get SQLITE_OPEN_SHAREDCACHE() As Long
-    SQLITE_OPEN_SHAREDCACHE = P_SQLITE_OPEN_SHAREDCACHE
+Public Property Get Isqlite3_SqliteOpenSharedcache() As Long
+    Isqlite3_SqliteOpenSharedcache = P_SQLITE_OPEN_SHAREDCACHE
 End Property
-Public Property Get SQLITE_OPEN_PRIVATECACHE() As Long
-    SQLITE_OPEN_PRIVATECACHE = P_SQLITE_OPEN_PRIVATECACHE
+Public Property Get Isqlite3_SqliteOpenPrivatecache() As Long
+    Isqlite3_SqliteOpenPrivatecache = P_SQLITE_OPEN_PRIVATECACHE
 End Property
-Public Property Get SQLITE_OPEN_WAL() As Long
-    SQLITE_OPEN_WAL = P_SQLITE_OPEN_WAL
+Public Property Get Isqlite3_SqliteOpenWal() As Long
+    Isqlite3_SqliteOpenWal = P_SQLITE_OPEN_WAL
 End Property
 
-Private Sub CheckOrChangeDir(Optional MasterDirectory As String = "")
+Private Sub ISqlite3_CheckOrChangeDir(Optional MasterDirectory As String = "")
     If MasterDirectory = "" Then
         If CurDir <> ThisWorkbook.Path Then
-            Me.DatabaseDirectory = ThisWorkbook.Path
+            Me.ISqlite3_DatabaseDirectory = ThisWorkbook.Path
         End If
     Else
-        Me.DatabaseDirectory = MasterDirectory
+        Me.ISqlite3_DatabaseDirectory = MasterDirectory
     End If
 End Sub
 
-Public Property Let DatabaseDirectory(value As String)
+Public Property Let ISqlite3_DatabaseDirectory(value As String)
     If P_MASTER_DATABASE_DIRECTORY = "" Then
         pDatabaseDirectory = value
         ChDir pDatabaseDirectory
@@ -523,15 +525,15 @@ Public Property Let DatabaseDirectory(value As String)
     End If
 End Property
 
-Public Property Get DatabaseDirectory() As String
+Public Property Get ISqlite3_DatabaseDirectory() As String
     If P_MASTER_DATABASE_DIRECTORY = "" Then
-        DatabaseDirectory = pDatabaseDirectory
+        ISqlite3_DatabaseDirectory = pDatabaseDirectory
     Else
-        DatabaseDirectory = "Master directory: " & P_MASTER_DATABASE_DIRECTORY
+        ISqlite3_DatabaseDirectory = "Master directory: " & P_MASTER_DATABASE_DIRECTORY
     End If
 End Property
 
-Public Function SQLite3Initialize(Optional ByVal libDir As String) As Long
+Public Function ISqlite3_SQLite3Initialize(Optional ByVal libDir As String) As Long
     ' A nice option here is to call SetDllDirectory, but that API is only available since Windows XP SP1.
     If libDir = "" Then libDir = ThisWorkbook.Path
     If Right(libDir, 1) <> "\" Then libDir = libDir & "\"
@@ -540,7 +542,7 @@ Public Function SQLite3Initialize(Optional ByVal libDir As String) As Long
         hSQLiteLibrary = LoadLibrary(libDir + "SQLite3.dll")
         If hSQLiteLibrary = 0 Then
             Debug.Print "SQLite3Initialize Error Loading " + libDir + "SQLite3.dll:", Err.LastDllError
-            SQLite3Initialize = SQLITE_INIT_ERROR
+            ISqlite3_SQLite3Initialize = Isqlite3_SqliteInitError
             Exit Function
         End If
     End If
@@ -556,10 +558,10 @@ Public Function SQLite3Initialize(Optional ByVal libDir As String) As Long
         End If
     End If
     #End If
-    SQLite3Initialize = SQLITE_INIT_OK
+    ISqlite3_SQLite3Initialize = Isqlite3_SqliteInitOk
 End Function
 
-Public Sub SQLite3Free()
+Public Sub ISqlite3_SQLite3Free()
    Dim refCount As Long
    If hSQLiteStdCallLibrary <> 0 Then
         refCount = FreeLibrary(hSQLiteStdCallLibrary)
@@ -581,194 +583,113 @@ End Sub
 '=====================================================================================
 ' SQLite library version
 
-Public Function SQLite3LibVersion() As String
-    SQLite3LibVersion = Utf8PtrToString(sqlite3_libversion())
+Public Function ISqlite3_SQLite3LibVersion() As String
+    ISqlite3_SQLite3LibVersion = ISqlite3_Utf8PtrToString(sqlite3_libversion())
 End Function
 
 '=====================================================================================
 ' Database connections
-#If Win64 Then
-Public Function SQLite3Open(ByVal fileName As String, ByRef dbHandle As LongPtr) As Long
-#Else
-Public Function SQLite3Open(ByVal fileName As String, ByRef dbHandle As Long) As Long
-#End If
-    SQLite3Open = sqlite3_open16(StrPtr(fileName), dbHandle)
+Public Function ISqlite3_SQLite3Open(ByVal fileName As String, ByRef dbHandle As LongPtr) As Long
+    ISqlite3_SQLite3Open = sqlite3_open16(StrPtr(fileName), dbHandle)
 End Function
 
-#If Win64 Then
-Public Function SQLite3OpenV2(ByVal fileName As String, ByRef dbHandle As LongPtr, ByVal flags As Long, ByVal vfsName As String) As Long
-#Else
-Public Function SQLite3OpenV2(ByVal fileName As String, ByRef dbHandle As Long, ByVal flags As Long, ByVal vfsName As String) As Long
-#End If
+Public Function ISqlite3_SQLite3OpenV2(ByVal fileName As String, ByRef dbHandle As LongPtr, ByVal flags As Long, ByVal vfsName As String) As Long
 
     Dim bufFileName() As Byte
     Dim bufVfsName() As Byte
-    bufFileName = StringToUtf8Bytes(fileName)
+    bufFileName = ISqlite3_StringToUtf8Bytes(fileName)
     If vfsName = Empty Then
-        SQLite3OpenV2 = sqlite3_open_v2(VarPtr(bufFileName(0)), dbHandle, flags, 0)
+        ISqlite3_SQLite3OpenV2 = sqlite3_open_v2(VarPtr(bufFileName(0)), dbHandle, flags, 0)
     Else
-        bufVfsName = StringToUtf8Bytes(vfsName)
-        SQLite3OpenV2 = sqlite3_open_v2(VarPtr(bufFileName(0)), dbHandle, flags, VarPtr(bufVfsName(0)))
+        bufVfsName = ISqlite3_StringToUtf8Bytes(vfsName)
+        ISqlite3_SQLite3OpenV2 = sqlite3_open_v2(VarPtr(bufFileName(0)), dbHandle, flags, VarPtr(bufVfsName(0)))
     End If
 
 End Function
 
-#If Win64 Then
-Public Function SQLite3Close(ByVal dbHandle As LongPtr) As Long
-#Else
-Public Function SQLite3Close(ByVal dbHandle As Long) As Long
-#End If
-    SQLite3Close = sqlite3_close(dbHandle)
+Public Function ISqlite3_SQLite3Close(ByVal dbHandle As LongPtr) As Long
+    ISqlite3_SQLite3Close = sqlite3_close(dbHandle)
 End Function
 
 '=====================================================================================
 ' Error information
 
-#If Win64 Then
-Public Function SQLite3ErrMsg(ByVal dbHandle As LongPtr) As String
-#Else
-Public Function SQLite3ErrMsg(ByVal dbHandle As Long) As String
-#End If
-    SQLite3ErrMsg = Utf8PtrToString(sqlite3_errmsg(dbHandle))
+Public Function ISqlite3_SQLite3ErrMsg(ByVal dbHandle As LongPtr) As String
+    ISqlite3_SQLite3ErrMsg = ISqlite3_Utf8PtrToString(sqlite3_errmsg(dbHandle))
 End Function
 
-#If Win64 Then
-Public Function SQLite3ErrCode(ByVal dbHandle As LongPtr) As Long
-#Else
-Public Function SQLite3ErrCode(ByVal dbHandle As Long) As Long
-#End If
-    SQLite3ErrCode = sqlite3_errcode(dbHandle)
+Public Function ISqlite3_SQLite3ErrCode(ByVal dbHandle As LongPtr) As Long
+    ISqlite3_SQLite3ErrCode = sqlite3_errcode(dbHandle)
 End Function
 
-#If Win64 Then
-Public Function SQLite3ExtendedErrCode(ByVal dbHandle As LongPtr) As Long
-#Else
-Public Function SQLite3ExtendedErrCode(ByVal dbHandle As Long) As Long
-#End If
-    SQLite3ExtendedErrCode = sqlite3_extended_errcode(dbHandle)
+Public Function ISqlite3_SQLite3ExtendedErrCode(ByVal dbHandle As LongPtr) As Long
+    ISqlite3_SQLite3ExtendedErrCode = sqlite3_extended_errcode(dbHandle)
 End Function
 
 '=====================================================================================
 ' Change Counts
 
-#If Win64 Then
-Public Function SQLite3Changes(ByVal dbHandle As LongPtr) As Long
-#Else
-Public Function SQLite3Changes(ByVal dbHandle As Long) As Long
-#End If
-    SQLite3Changes = sqlite3_changes(dbHandle)
+Public Function ISqlite3_SQLite3Changes(ByVal dbHandle As LongPtr) As Long
+    ISqlite3_SQLite3Changes = sqlite3_changes(dbHandle)
 End Function
 
-#If Win64 Then
-Public Function SQLite3TotalChanges(ByVal dbHandle As LongPtr) As Long
-#Else
-Public Function SQLite3TotalChanges(ByVal dbHandle As Long) As Long
-#End If
-    SQLite3TotalChanges = sqlite3_total_changes(dbHandle)
+Public Function ISqlite3_SQLite3TotalChanges(ByVal dbHandle As LongPtr) As Long
+    ISqlite3_SQLite3TotalChanges = sqlite3_total_changes(dbHandle)
 End Function
 
 '=====================================================================================
 ' Statements
 
-#If Win64 Then
-Public Function SQLite3PrepareV2(ByVal dbHandle As LongPtr, ByVal sql As String, ByRef stmtHandle As LongPtr) As Long
-#Else
-Public Function SQLite3PrepareV2(ByVal dbHandle As Long, ByVal sql As String, ByRef stmtHandle As Long) As Long
-#End If
+Public Function ISqlite3_SQLite3PrepareV2(ByVal dbHandle As LongPtr, ByVal sql As String, ByRef stmtHandle As LongPtr) As Long
     ' Only the first statement (up to ';') is prepared. Currently we don't retrieve the 'tail' pointer.
-    SQLite3PrepareV2 = sqlite3_prepare16_v2(dbHandle, StrPtr(sql), Len(sql) * 2, stmtHandle, 0)
+    ISqlite3_SQLite3PrepareV2 = sqlite3_prepare16_v2(dbHandle, StrPtr(sql), Len(sql) * 2, stmtHandle, 0)
 End Function
 
-#If Win64 Then
-Public Function SQLite3Step(ByVal stmtHandle As LongPtr) As Long
-#Else
-Public Function SQLite3Step(ByVal stmtHandle As Long) As Long
-#End If
-    SQLite3Step = sqlite3_step(stmtHandle)
+Public Function ISqlite3_SQLite3Step(ByVal stmtHandle As LongPtr) As Long
+    ISqlite3_SQLite3Step = sqlite3_step(stmtHandle)
 End Function
 
-#If Win64 Then
-Public Function SQLite3Reset(ByVal stmtHandle As LongPtr) As Long
-#Else
-Public Function SQLite3Reset(ByVal stmtHandle As Long) As Long
-#End If
-    SQLite3Reset = sqlite3_reset(stmtHandle)
+Public Function ISqlite3_SQLite3Reset(ByVal stmtHandle As LongPtr) As Long
+    ISqlite3_SQLite3Reset = sqlite3_reset(stmtHandle)
 End Function
 
-#If Win64 Then
-Public Function SQLite3Finalize(ByVal stmtHandle As LongPtr) As Long
-#Else
-Public Function SQLite3Finalize(ByVal stmtHandle As Long) As Long
-#End If
-    SQLite3Finalize = sqlite3_finalize(stmtHandle)
+Public Function ISqlite3_SQLite3Finalize(ByVal stmtHandle As LongPtr) As Long
+    ISqlite3_SQLite3Finalize = sqlite3_finalize(stmtHandle)
 End Function
 
 '=====================================================================================
 ' Statement column access (0-based indices)
 
-#If Win64 Then
-Public Function SQLite3ColumnCount(ByVal stmtHandle As LongPtr) As Long
-#Else
-Public Function SQLite3ColumnCount(ByVal stmtHandle As Long) As Long
-#End If
-    SQLite3ColumnCount = sqlite3_column_count(stmtHandle)
+Public Function ISqlite3_SQLite3ColumnCount(ByVal stmtHandle As LongPtr) As Long
+    ISqlite3_SQLite3ColumnCount = sqlite3_column_count(stmtHandle)
 End Function
 
-#If Win64 Then
-Public Function SQLite3ColumnType(ByVal stmtHandle As LongPtr, ByVal ZeroBasedColIndex As Long) As Long
-#Else
-Public Function SQLite3ColumnType(ByVal stmtHandle As Long, ByVal ZeroBasedColIndex As Long) As Long
-#End If
-    SQLite3ColumnType = sqlite3_column_type(stmtHandle, ZeroBasedColIndex)
+Public Function ISqlite3_SQLite3ColumnType(ByVal stmtHandle As LongPtr, ByVal ZeroBasedColIndex As Long) As Long
+    ISqlite3_SQLite3ColumnType = sqlite3_column_type(stmtHandle, ZeroBasedColIndex)
 End Function
 
-#If Win64 Then
-Public Function SQLite3ColumnName(ByVal stmtHandle As LongPtr, ByVal ZeroBasedColIndex As Long) As String
-#Else
-Public Function SQLite3ColumnName(ByVal stmtHandle As Long, ByVal ZeroBasedColIndex As Long) As String
-#End If
-    SQLite3ColumnName = Utf8PtrToString(sqlite3_column_name(stmtHandle, ZeroBasedColIndex))
+Public Function ISqlite3_SQLite3ColumnName(ByVal stmtHandle As LongPtr, ByVal ZeroBasedColIndex As Long) As String
+    ISqlite3_SQLite3ColumnName = ISqlite3_Utf8PtrToString(sqlite3_column_name(stmtHandle, ZeroBasedColIndex))
 End Function
 
-#If Win64 Then
-Public Function SQLite3ColumnDouble(ByVal stmtHandle As LongPtr, ByVal ZeroBasedColIndex As Long) As Double
-#Else
-Public Function SQLite3ColumnDouble(ByVal stmtHandle As Long, ByVal ZeroBasedColIndex As Long) As Double
-#End If
-    SQLite3ColumnDouble = sqlite3_column_double(stmtHandle, ZeroBasedColIndex)
+Public Function ISqlite3_SQLite3ColumnDouble(ByVal stmtHandle As LongPtr, ByVal ZeroBasedColIndex As Long) As Double
+    ISqlite3_SQLite3ColumnDouble = sqlite3_column_double(stmtHandle, ZeroBasedColIndex)
 End Function
 
-#If Win64 Then
-Public Function SQLite3ColumnInt32(ByVal stmtHandle As LongPtr, ByVal ZeroBasedColIndex As Long) As Long
-#Else
-Public Function SQLite3ColumnInt32(ByVal stmtHandle As Long, ByVal ZeroBasedColIndex As Long) As Long
-#End If
-    SQLite3ColumnInt32 = sqlite3_column_int(stmtHandle, ZeroBasedColIndex)
+Public Function ISqlite3_SQLite3ColumnInt32(ByVal stmtHandle As LongPtr, ByVal ZeroBasedColIndex As Long) As Long
+    ISqlite3_SQLite3ColumnInt32 = sqlite3_column_int(stmtHandle, ZeroBasedColIndex)
 End Function
 
-#If Win64 Then
-Public Function SQLite3ColumnText(ByVal stmtHandle As LongPtr, ByVal ZeroBasedColIndex As Long) As String
-#Else
-Public Function SQLite3ColumnText(ByVal stmtHandle As Long, ByVal ZeroBasedColIndex As Long) As String
-#End If
-    SQLite3ColumnText = Utf8PtrToString(sqlite3_column_text(stmtHandle, ZeroBasedColIndex))
+Public Function ISqlite3_SQLite3ColumnText(ByVal stmtHandle As LongPtr, ByVal ZeroBasedColIndex As Long) As String
+    ISqlite3_SQLite3ColumnText = ISqlite3_Utf8PtrToString(sqlite3_column_text(stmtHandle, ZeroBasedColIndex))
 End Function
 
-#If Win64 Then
-Public Function SQLite3ColumnDate(ByVal stmtHandle As LongPtr, ByVal ZeroBasedColIndex As Long) As Date
-#Else
-Public Function SQLite3ColumnDate(ByVal stmtHandle As Long, ByVal ZeroBasedColIndex As Long) As Date
-#End If
-    SQLite3ColumnDate = FromJulianDay(sqlite3_column_double(stmtHandle, ZeroBasedColIndex))
+Public Function ISqlite3_SQLite3ColumnDate(ByVal stmtHandle As LongPtr, ByVal ZeroBasedColIndex As Long) As Date
+    ISqlite3_SQLite3ColumnDate = ISqlite3_FromJulianDay(sqlite3_column_double(stmtHandle, ZeroBasedColIndex))
 End Function
 
-#If Win64 Then
-Public Function SQLite3ColumnBlob(ByVal stmtHandle As LongPtr, ByVal ZeroBasedColIndex As Long) As Byte()
+Public Function ISqlite3_SQLite3ColumnBlob(ByVal stmtHandle As LongPtr, ByVal ZeroBasedColIndex As Long) As Byte()
     Dim ptr As LongPtr
-#Else
-Public Function SQLite3ColumnBlob(ByVal stmtHandle As Long, ByVal ZeroBasedColIndex As Long) As Byte()
-    Dim ptr As Long
-#End If
 
     Dim length As Long
     Dim buf() As Byte
@@ -777,152 +698,87 @@ Public Function SQLite3ColumnBlob(ByVal stmtHandle As Long, ByVal ZeroBasedColIn
     length = sqlite3_column_bytes(stmtHandle, ZeroBasedColIndex)
     ReDim buf(length - 1)
     RtlMoveMemory VarPtr(buf(0)), ptr, length
-    SQLite3ColumnBlob = buf
+    ISqlite3_SQLite3ColumnBlob = buf
 End Function
 '=====================================================================================
 ' Statement bindings
 
-#If Win64 Then
-Public Function SQLite3BindText(ByVal stmtHandle As LongPtr, ByVal OneBasedParamIndex As Long, ByVal value As String) As Long
-#Else
-Public Function SQLite3BindText(ByVal stmtHandle As Long, ByVal OneBasedParamIndex As Long, ByVal value As String) As Long
-#End If
-    SQLite3BindText = sqlite3_bind_text16(stmtHandle, OneBasedParamIndex, StrPtr(value), -1, SQLITE_TRANSIENT)
+Public Function ISqlite3_SQLite3BindText(ByVal stmtHandle As LongPtr, ByVal OneBasedParamIndex As Long, ByVal value As String) As Long
+    ISqlite3_SQLite3BindText = sqlite3_bind_text16(stmtHandle, OneBasedParamIndex, StrPtr(value), -1, SQLITE_TRANSIENT)
 End Function
 
-#If Win64 Then
-Public Function SQLite3BindDouble(ByVal stmtHandle As LongPtr, ByVal OneBasedParamIndex As Long, ByVal value As Double) As Long
-#Else
-Public Function SQLite3BindDouble(ByVal stmtHandle As Long, ByVal OneBasedParamIndex As Long, ByVal value As Double) As Long
-#End If
-    SQLite3BindDouble = sqlite3_bind_double(stmtHandle, OneBasedParamIndex, value)
+Public Function ISqlite3_SQLite3BindDouble(ByVal stmtHandle As LongPtr, ByVal OneBasedParamIndex As Long, ByVal value As Double) As Long
+    ISqlite3_SQLite3BindDouble = sqlite3_bind_double(stmtHandle, OneBasedParamIndex, value)
 End Function
 
-#If Win64 Then
-Public Function SQLite3BindInt32(ByVal stmtHandle As LongPtr, ByVal OneBasedParamIndex As Long, ByVal value As Long) As Long
-#Else
-Public Function SQLite3BindInt32(ByVal stmtHandle As Long, ByVal OneBasedParamIndex As Long, ByVal value As Long) As Long
-#End If
-    SQLite3BindInt32 = sqlite3_bind_int(stmtHandle, OneBasedParamIndex, value)
+Public Function ISqlite3_SQLite3BindInt32(ByVal stmtHandle As LongPtr, ByVal OneBasedParamIndex As Long, ByVal value As Long) As Long
+    ISqlite3_SQLite3BindInt32 = sqlite3_bind_int(stmtHandle, OneBasedParamIndex, value)
 End Function
 
-#If Win64 Then
-Public Function SQLite3BindDate(ByVal stmtHandle As LongPtr, ByVal OneBasedParamIndex As Long, ByVal value As Date) As Long
-#Else
-Public Function SQLite3BindDate(ByVal stmtHandle As Long, ByVal OneBasedParamIndex As Long, ByVal value As Date) As Long
-#End If
-    SQLite3BindDate = sqlite3_bind_double(stmtHandle, OneBasedParamIndex, ToJulianDay(value))
+Public Function ISqlite3_SQLite3BindDate(ByVal stmtHandle As LongPtr, ByVal OneBasedParamIndex As Long, ByVal value As Date) As Long
+    ISqlite3_SQLite3BindDate = sqlite3_bind_double(stmtHandle, OneBasedParamIndex, ISqlite3_ToJulianDay(value))
 End Function
 
-#If Win64 Then
-Public Function SQLite3BindBlob(ByVal stmtHandle As LongPtr, ByVal OneBasedParamIndex As Long, ByRef value() As Byte) As Long
-#Else
-Public Function SQLite3BindBlob(ByVal stmtHandle As Long, ByVal OneBasedParamIndex As Long, ByRef value() As Byte) As Long
-#End If
+Public Function ISqlite3_SQLite3BindBlob(ByVal stmtHandle As LongPtr, ByVal OneBasedParamIndex As Long, ByRef value() As Byte) As Long
     Dim length As Long
     length = UBound(value) - LBound(value) + 1
-    SQLite3BindBlob = sqlite3_bind_blob(stmtHandle, OneBasedParamIndex, VarPtr(value(0)), length, SQLITE_TRANSIENT)
+    ISqlite3_SQLite3BindBlob = sqlite3_bind_blob(stmtHandle, OneBasedParamIndex, VarPtr(value(0)), length, SQLITE_TRANSIENT)
 End Function
 
-#If Win64 Then
-Public Function SQLite3BindNull(ByVal stmtHandle As LongPtr, ByVal OneBasedParamIndex As Long) As Long
-#Else
-Public Function SQLite3BindNull(ByVal stmtHandle As Long, ByVal OneBasedParamIndex As Long) As Long
-#End If
-    SQLite3BindNull = sqlite3_bind_null(stmtHandle, OneBasedParamIndex)
+Public Function ISqlite3_SQLite3BindNull(ByVal stmtHandle As LongPtr, ByVal OneBasedParamIndex As Long) As Long
+    ISqlite3_SQLite3BindNull = sqlite3_bind_null(stmtHandle, OneBasedParamIndex)
 End Function
 
-#If Win64 Then
-Public Function SQLite3BindParameterCount(ByVal stmtHandle As LongPtr) As Long
-#Else
-Public Function SQLite3BindParameterCount(ByVal stmtHandle As Long) As Long
-#End If
-    SQLite3BindParameterCount = sqlite3_bind_parameter_count(stmtHandle)
+Public Function ISqlite3_SQLite3BindParameterCount(ByVal stmtHandle As LongPtr) As Long
+    ISqlite3_SQLite3BindParameterCount = sqlite3_bind_parameter_count(stmtHandle)
 End Function
 
-#If Win64 Then
-Public Function SQLite3BindParameterName(ByVal stmtHandle As LongPtr, ByVal OneBasedParamIndex As Long) As String
-#Else
-Public Function SQLite3BindParameterName(ByVal stmtHandle As Long, ByVal OneBasedParamIndex As Long) As String
-#End If
-    SQLite3BindParameterName = Utf8PtrToString(sqlite3_bind_parameter_name(stmtHandle, OneBasedParamIndex))
+Public Function ISqlite3_SQLite3BindParameterName(ByVal stmtHandle As LongPtr, ByVal OneBasedParamIndex As Long) As String
+    ISqlite3_SQLite3BindParameterName = ISqlite3_Utf8PtrToString(sqlite3_bind_parameter_name(stmtHandle, OneBasedParamIndex))
 End Function
 
-#If Win64 Then
-Public Function SQLite3BindParameterIndex(ByVal stmtHandle As LongPtr, ByVal paramName As String) As Long
-#Else
-Public Function SQLite3BindParameterIndex(ByVal stmtHandle As Long, ByVal paramName As String) As Long
-#End If
+Public Function ISqlite3_SQLite3BindParameterIndex(ByVal stmtHandle As LongPtr, ByVal paramName As String) As Long
     Dim buf() As Byte
-    buf = StringToUtf8Bytes(paramName)
-    SQLite3BindParameterIndex = sqlite3_bind_parameter_index(stmtHandle, VarPtr(buf(0)))
+    buf = ISqlite3_StringToUtf8Bytes(paramName)
+    ISqlite3_SQLite3BindParameterIndex = sqlite3_bind_parameter_index(stmtHandle, VarPtr(buf(0)))
 End Function
 
-#If Win64 Then
-Public Function SQLite3ClearBindings(ByVal stmtHandle As LongPtr) As Long
-#Else
-Public Function SQLite3ClearBindings(ByVal stmtHandle As Long) As Long
-#End If
-    SQLite3ClearBindings = sqlite3_clear_bindings(stmtHandle)
+Public Function ISqlite3_SQLite3ClearBindings(ByVal stmtHandle As LongPtr) As Long
+    ISqlite3_SQLite3ClearBindings = sqlite3_clear_bindings(stmtHandle)
 End Function
-
 
 '=====================================================================================
 ' Backup
-Public Function SQLite3Sleep(ByVal timeToSleepInMs As Long) As Long
-    SQLite3Sleep = sqlite3_sleep(timeToSleepInMs)
+Public Function ISqlite3_SQLite3Sleep(ByVal timeToSleepInMs As Long) As Long
+    ISqlite3_SQLite3Sleep = sqlite3_sleep(timeToSleepInMs)
 End Function
 
-#If Win64 Then
-Public Function SQLite3BackupInit(ByVal dbHandleDestination As LongPtr, ByVal destinationName As String, ByVal dbHandleSource As LongPtr, ByVal sourceName As String) As LongPtr
-#Else
-Public Function SQLite3BackupInit(ByVal dbHandleDestination As Long, ByVal destinationName As String, ByVal dbHandleSource As Long, ByVal sourceName As String) As Long
-#End If
+Public Function ISqlite3_SQLite3BackupInit(ByVal dbHandleDestination As LongPtr, ByVal destinationName As String, ByVal dbHandleSource As LongPtr, ByVal sourceName As String) As LongPtr
     Dim bufDestinationName() As Byte
     Dim bufSourceName() As Byte
-    bufDestinationName = StringToUtf8Bytes(destinationName)
-    bufSourceName = StringToUtf8Bytes(sourceName)
-    SQLite3BackupInit = sqlite3_backup_init(dbHandleDestination, VarPtr(bufDestinationName(0)), dbHandleSource, VarPtr(bufSourceName(0)))
+    bufDestinationName = ISqlite3_StringToUtf8Bytes(destinationName)
+    bufSourceName = ISqlite3_StringToUtf8Bytes(sourceName)
+    ISqlite3_SQLite3BackupInit = sqlite3_backup_init(dbHandleDestination, VarPtr(bufDestinationName(0)), dbHandleSource, VarPtr(bufSourceName(0)))
 End Function
 
-#If Win64 Then
-Public Function SQLite3BackupFinish(ByVal backupHandle As LongPtr) As Long
-#Else
-Public Function SQLite3BackupFinish(ByVal backupHandle As Long) As Long
-#End If
-    SQLite3BackupFinish = sqlite3_backup_finish(backupHandle)
+Public Function ISqlite3_SQLite3BackupFinish(ByVal backupHandle As LongPtr) As Long
+    ISqlite3_SQLite3BackupFinish = sqlite3_backup_finish(backupHandle)
 End Function
 
-#If Win64 Then
-Public Function SQLite3BackupStep(ByVal backupHandle As LongPtr, ByVal numberOfPages) As Long
-#Else
-Public Function SQLite3BackupStep(ByVal backupHandle As Long, ByVal numberOfPages) As Long
-#End If
-    SQLite3BackupStep = sqlite3_backup_step(backupHandle, numberOfPages)
+Public Function ISqlite3_SQLite3BackupStep(ByVal backupHandle As LongPtr, ByVal numberOfPages) As Long
+    ISqlite3_SQLite3BackupStep = sqlite3_backup_step(backupHandle, numberOfPages)
 End Function
 
-#If Win64 Then
-Public Function SQLite3BackupPageCount(ByVal backupHandle As LongPtr) As Long
-#Else
-Public Function SQLite3BackupPageCount(ByVal backupHandle As Long) As Long
-#End If
-    SQLite3BackupPageCount = sqlite3_backup_pagecount(backupHandle)
+Public Function ISqlite3_SQLite3BackupPageCount(ByVal backupHandle As LongPtr) As Long
+    ISqlite3_SQLite3BackupPageCount = sqlite3_backup_pagecount(backupHandle)
 End Function
 
-#If Win64 Then
-Public Function SQLite3BackupRemaining(ByVal backupHandle As LongPtr) As Long
-#Else
-Public Function SQLite3BackupRemaining(ByVal backupHandle As Long) As Long
-#End If
-    SQLite3BackupRemaining = sqlite3_backup_remaining(backupHandle)
+Public Function ISqlite3_SQLite3BackupRemaining(ByVal backupHandle As LongPtr) As Long
+    ISqlite3_SQLite3BackupRemaining = sqlite3_backup_remaining(backupHandle)
 End Function
 
 ' String Helpers
-#If Win64 Then
-Function Utf8PtrToString(ByVal pUtf8String As LongPtr) As String
-#Else
-Function Utf8PtrToString(ByVal pUtf8String As Long) As String
-#End If
+Function ISqlite3_Utf8PtrToString(ByVal pUtf8String As LongPtr) As String
     Dim buf As String
     Dim cSize As Long
     Dim RetVal As Long
@@ -930,19 +786,19 @@ Function Utf8PtrToString(ByVal pUtf8String As Long) As String
     cSize = MultiByteToWideChar(CP_UTF8, 0, pUtf8String, -1, 0, 0)
     ' cSize includes the terminating null character
     If cSize <= 1 Then
-        Utf8PtrToString = ""
+        ISqlite3_Utf8PtrToString = ""
         Exit Function
     End If
     
-    Utf8PtrToString = String(cSize - 1, "*") ' and a termintating null char.
-    RetVal = MultiByteToWideChar(CP_UTF8, 0, pUtf8String, -1, StrPtr(Utf8PtrToString), cSize)
+    ISqlite3_Utf8PtrToString = String(cSize - 1, "*") ' and a termintating null char.
+    RetVal = MultiByteToWideChar(CP_UTF8, 0, pUtf8String, -1, StrPtr(ISqlite3_Utf8PtrToString), cSize)
     If RetVal = 0 Then
         Debug.Print "Utf8PtrToString Error:", Err.LastDllError
         Exit Function
     End If
 End Function
 
-Function StringToUtf8Bytes(ByVal str As String) As Variant
+Function ISqlite3_StringToUtf8Bytes(ByVal str As String) As Variant
     Dim bSize As Long
     Dim RetVal As Long
     Dim buf() As Byte
@@ -958,26 +814,23 @@ Function StringToUtf8Bytes(ByVal str As String) As Variant
         Debug.Print "StringToUtf8Bytes Error:", Err.LastDllError
         Exit Function
     End If
-    StringToUtf8Bytes = buf
+    ISqlite3_StringToUtf8Bytes = buf
 End Function
 
-#If Win64 Then
-Function Utf16PtrToString(ByVal pUtf16String As LongPtr) As String
-#Else
-Function Utf16PtrToString(ByVal pUtf16String As Long) As String
-#End If
+Function ISqlite3_Utf16PtrToString(ByVal pUtf16String As LongPtr) As String
     Dim StrLen As Long
-    
     StrLen = lstrlenW(pUtf16String)
-    Utf16PtrToString = String(StrLen, "*")
-    lstrcpynW StrPtr(Utf16PtrToString), pUtf16String, StrLen
+    ISqlite3_Utf16PtrToString = String(StrLen, "*")
+    lstrcpynW StrPtr(ISqlite3_Utf16PtrToString), pUtf16String, StrLen
 End Function
 
 ' Date Helpers
-Public Function ToJulianDay(oleDate As Date) As Double
-    ToJulianDay = CDbl(oleDate) + JULIANDAY_OFFSET
+Public Function ISqlite3_ToJulianDay(oleDate As Date) As Double
+    ISqlite3_ToJulianDay = CDbl(oleDate) + JULIANDAY_OFFSET
 End Function
 
-Public Function FromJulianDay(julianDay As Double) As Date
-    FromJulianDay = CDate(julianDay - JULIANDAY_OFFSET)
+Public Function ISqlite3_FromJulianDay(julianDay As Double) As Date
+    ISqlite3_FromJulianDay = CDate(julianDay - JULIANDAY_OFFSET)
 End Function
+
+
