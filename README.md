@@ -9,7 +9,7 @@ This project is a forked version of Govert's *SQLite for Excel*. The main differ
 
 # Known bugs
 
-1. One of the test methods in cSqlite3Demo, TestBackup, throws an error. It is the only method among the original testing method that throws an error. I tested the method in the original code, and it also threw an error. So the error is not a result of refactoring. Since the method was throwing an error, the calling code in the AllTests method has been commented out. However, the original code for the method is still there.
+1. One of the test methods in cSqlite3Demo, TestBackup, throws an error. It is the only method among those called in the AllTests method that throws an error. I tested the method in the original code, and it also threw an error. So the error is not a result of refactoring. Since the method was throwing an error, the calling code in the AllTests method has been commented out. However, the original code for the method is still there.
 2. One of the original test methods in cSqlite3Demo, TestBinding, threw an error after refactoring. This error happens in the for loop in the code. The original code tested 100,000 elements. After refactoring, only 97,262 elements work. I have no idea why this is the case. But the code has been updated to this new upper bound so the test works. The original code with the original upper bound is left in the code but commented out.
 3. I am not able to get this code the file to work on my cloud-storage directory. If you're having similar issues, it may help to move the file to a network drive or some other directory where this isn't an issue.
 
