@@ -19,7 +19,7 @@ This code may not be compatible with 32-bit versions of Office. If you need 32-b
 
 # Example
 
-This is sample code taken from the mMain module which is included:
+This is sample code taken from the mMain module which is included in the Excel workbook:
 
     Sub Main()
         Dim sqlite As ISqlite3
