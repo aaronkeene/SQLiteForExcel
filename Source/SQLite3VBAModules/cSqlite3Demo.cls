@@ -9,9 +9,13 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 
-Dim TestFile As String
+Private TestFile As String
 
 Private pSqlite As ISqlite3
+
+Private Sub Class_Initialize()
+    TestFile = Environ("TEMP") & "\TestSqlite3ForExcel.db3"
+End Sub
 
 Public Sub init(sqlite As ISqlite3)
     Set pSqlite = sqlite
@@ -20,17 +24,16 @@ End Sub
 Public Sub AllTests()
     ' Check that this location can be written to
     ' Note that this file will be deleted after the tests complete!
-    TestFile = Environ("TEMP") & "\TestSqlite3ForExcel.db3"
         
-    Dim InitReturn As Long
-    
+'    Dim InitReturn As Long
+'
 '    #If Win64 Then
 '        ' I put the 64-bit version of SQLite.dll under a subdirectory called x64
 '        InitReturn = pSqlite.SQLite3Initialize(ThisWorkbook.Path + "\x64")
 '    #Else
 '        InitReturn = pSqlite.SQLite3Initialize ' Default path is ThisWorkbook.Path but can specify other path where the .dlls reside.
 '    #End If
-'    If InitReturn <> SQLITE_INIT_OK Then
+'    If InitReturn <> pSqlite.SqliteInitOk Then
 '        Debug.Print "Error Initializing SQLite. Error: " & Err.LastDllError
 '        Exit Sub
 '    End If
@@ -41,7 +44,7 @@ Public Sub AllTests()
     TestError
     TestInsert
     TestSelect
-    TestBinding 'throwing error
+    TestBinding
     TestDates
     TestStrings
     'TestBackup 'throwing error
@@ -1291,5 +1294,4 @@ Public Sub SQLite3ExecuteQuery(ByVal dbHandle As LongPtr, ByVal sqlQuery As Stri
         Debug.Print "SQLite3Finalize returned " & RetVal
     End With
 End Sub
-
 
