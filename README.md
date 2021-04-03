@@ -17,6 +17,9 @@ This project is a forked version of Govert's *SQLite for Excel*. The main differ
 
 This code may not be compatible with 32-bit versions of Office. If you need 32-bit compatability and this project doesn't work, I would recommend using the code in Govert's original project.
 
+# Future updates
+Some updates I'll make in the future include moving certain methods around and making certain methods private to assist in abstraction for the respective objects. Other potential updates may include writing code to make working with the default database easier. And perhaps creating an ORM that would make working with the database easier.
+
 # Example
 
 This is sample code taken from the mMain module which is included in the Excel workbook:
