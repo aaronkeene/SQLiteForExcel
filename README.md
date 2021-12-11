@@ -1,4 +1,5 @@
 # Overview
+
 This project is a forked version of Govert's *SQLite for Excel*. The main difference is that the code has been refactored to uses classes as opposed to the standard modules that the original project utilized. The original code was stored in two modules: Sqlite3 and Sqlite3Demo. I've since updated these files to the class modules cSqlite3 and cSqlite3Demo respectively. I've also added an ISqlite3 interface which cSqlite3 implements. My code also removed unnecessary conditional compilation from the codebase.
 
 # Motivations for refactoring
@@ -20,7 +21,8 @@ This code may not be compatible with 32-bit versions of Office. Govert also note
 If either of those are issues for you, I would recommend using the code in Govert's original project.
 
 # Future updates
-Some updates I'll make in the future include moving certain methods around and making certain methods private to assist in abstraction for the respective objects. Other potential updates may include writing code to make working with the default database easier. And perhaps creating an ORM that would make working with the database easier.
+
+Some updates I'm considering in the future include moving certain methods around and making certain methods private to assist in abstraction for the respective objects. Other potential updates may include writing code to make working with the default database easier. And perhaps creating an ORM that would make working with the database easier. The internal design of the original API is a bit complicated. So it will take some time for me to familiarize myself with it.
 
 # Example
 
